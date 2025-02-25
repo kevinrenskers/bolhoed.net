@@ -7,6 +7,7 @@ module.exports = {
         link: "#ffffff",
         loopwerk: "#f1a948",
         linkedin: "#0a66c2",
+        mastodon: "#2b90d9",
       },
     },
   },
