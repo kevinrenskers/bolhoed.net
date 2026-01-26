@@ -2,6 +2,9 @@
 module.exports = {
   content: ["./index.html"],
   theme: {
+    screens: {
+      md: "870px",
+    },
     extend: {
       colors: {
         link: "#ffffff",
