@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@source "../../Sources/Bolhoed/templates/*.swift";
+
+@theme {
+  --color-accent: #f1a948;
+}
+
+@layer base {
+  h1 {
+    @apply text-4xl font-bold tracking-tight text-white sm:text-5xl;
+  }
+
+  body.home {
+    @apply md:bg-[url(/static/ape.svg)] bg-contain bg-left-bottom bg-fixed bg-no-repeat;
+  }
+}
