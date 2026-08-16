@@ -8,9 +8,18 @@ function enhance(type) {
 
   for (const row of rows()) {
     row.draggable = true;
+
+    // Selecting the title or the position badge steals the drag
+    row.style.webkitUserSelect = "none";
+    row.style.userSelect = "none";
+
     // Links and images are natively draggable and would hijack the row's own drag
     for (const child of row.querySelectorAll("a, img")) {
       child.draggable = false;
+
+      // macOS's Live Text offers up the text baked into the cover art, and selecting
+      // that steals the drag. This is WebKit's opt-out.
+      child.style.webkitUserSelect = "none";
     }
   }
 

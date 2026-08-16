@@ -44,7 +44,7 @@ private func gameCardContents(_ game: Item<GameMetadata>) -> Node {
     // on the left of those, so crop from there instead of the middle.
     img(
       alt: game.title,
-      class: "absolute inset-0 h-full w-full object-cover object-left transition duration-500 group-hover:scale-105",
+      class: "absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105",
       loading: "lazy",
       src: game.metadata.posterURL
     )
