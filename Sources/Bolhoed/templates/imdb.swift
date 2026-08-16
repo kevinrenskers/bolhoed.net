@@ -18,6 +18,11 @@ func renderShows(context: ItemsRenderingContext<ImdbMetadata>) -> Node {
       ul(class: "grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5") {
         context.items.map(showCard)
       }
+      
+      if Saga.isDev {
+        script(src: "/static/enhance.js")
+        Node.raw("<script>enhance('shows');</script>")
+      }
     }
   }
 }
@@ -36,6 +41,11 @@ func renderMovies(context: ItemsRenderingContext<ImdbMetadata>) -> Node {
 
       ul(class: "grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5") {
         context.items.map(showCard)
+      }
+      
+      if Saga.isDev {
+        script(src: "/static/enhance.js")
+        Node.raw("<script>enhance('movies');</script>")
       }
     }
   }
@@ -68,12 +78,6 @@ private func showCard(_ show: Item<ImdbMetadata>) -> Node {
       p(class: "mt-0.5 text-xs text-white/80") {
         show.metadata.genres.prefix(2).joined(separator: ", ")
       }
-
-//      if !show.metadata.description.isEmpty {
-//        p(class: "mt-2 text-xs leading-relaxed text-zinc-400") {
-//          show.metadata.description
-//        }
-//      }
     }
   }
 }

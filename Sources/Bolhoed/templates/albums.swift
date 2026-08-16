@@ -28,6 +28,11 @@ func renderAlbums(context: ItemsRenderingContext<AlbumMetadata>) -> Node {
           }
         }
       }
+      
+      if Saga.isDev {
+        script(src: "/static/enhance.js")
+        Node.raw("<script>enhance('albums');</script>")
+      }
     }
   }
 }
