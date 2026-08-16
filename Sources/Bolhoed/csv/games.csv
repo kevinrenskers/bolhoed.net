@@ -1,4 +1,4 @@
-Id;Title
+Id;Title;URL
 1888930;The Last of Us™ Part I
 1245620;ELDEN RING
 1627720;Lies of P
@@ -15,8 +15,6 @@ Id;Title
 312660;Sniper Elite 4
 292030;The Witcher 3: Wild Hunt
 13540;Tom Clancy's Rainbow Six: Vegas
-15120;Tom Clancy's Rainbow Six: Vegas 2
-492720;Tropico 6
 3768760;007 First Light
 268500;XCOM 2
 107100;Bastion
@@ -27,23 +25,19 @@ Id;Title
 240760;Wasteland 2
 105600;Terraria
 588650;Dead Cells
-233450;Prison Architect
 2742830;Monster Train 2
-1029690;Sniper Elite 5
+374320;DARK SOULS™ III
 1259420;Days Gone
-1151640;Horizon Zero Dawn™ Complete Edition
-2420110;Horizon Forbidden West™ Complete Edition
-10500;Total War: EMPIRE - Definitive Edition
+1151640;Horizon Zero Dawn
+10500;Total War: EMPIRE
 255710;Cities: Skylines
 686060;Mewgenics
-373420;Divinity: Original Sin Enhanced Edition
 719040;Wasteland 3
 3405340;Megabonk
 281990;Stellaris
 33250;Anno 1404
-2215430;Ghost of Tsushima DIRECTOR'S CUT
-374320;DARK SOULS™ III
-1102190;Monster Train
+2215430;Ghost of Tsushima
+1593500;God of War
 364360;Total War: WARHAMMER
 2322010;God of War Ragnarök
 2088570;Tiny Rogues
@@ -59,7 +53,7 @@ Id;Title
 2868840;Slay the Spire 2
 1282100;Remnant II
 814380;Sekiro™: Shadows Die Twice
-1238040;Dragon Age II: Ultimate Edition
+1238040;Dragon Age II
 242920;Banished
 1808500;ARC Raiders
 2784470;9 Kings
@@ -67,46 +61,57 @@ Id;Title
 2680010;The First Berserker: Khazan
 934700;Dead Island 2
 2084000;Shogun Showdown
-230230;Divinity: Original Sin (Classic)
+373420;Divinity: Original Sin
 1850570;DEATH STRANDING DIRECTOR'S CUT
 2694490;Path of Exile 2
 323190;Frostpunk
-245620;Tropico 5
+233450;Prison Architect
 3167020;Escape From Duckov
-460930;Tom Clancy's Ghost Recon® Wildlands
 4760;Rome: Total War
-1593500;God of War
 264710;Subnautica
 1775490;Slice & Dice
 291650;Pillars of Eternity
 560130;Pillars of Eternity II: Deadfire
 1599660;Sackboy™: A Big Adventure
-4700;Total War: MEDIEVAL II - Definitive Edition
+4700;Total War: MEDIEVAL II
 234140;Mad Max
-558990;Opus Magnum
 412740;Audioshield
-214950;Total War: ROME II - Emperor Edition
+214950;Total War: ROME II
 2366980;Thank Goodness You're Here!
 49520;Borderlands 2
 1551360;Forza Horizon 5
 245490;Trials Fusion
-8980;Borderlands GOTY
 17460;Mass Effect (2007)
 1426210;It Takes Two
 1154790;XIII
 368260;Marvel's Midnight Suns
 1545560;Shadow Gambit: The Cursed Crew
-219150;Hotline Miami
 24780;SimCity 4 Deluxe
 782330;DOOM Eternal
 47730;Dragon Age: Origins - Awakening
-729040;Borderlands GOTY Enhanced
 261640;Borderlands: The Pre-Sequel
 228200;Company of Heroes
 403640;Dishonored 2
 379720;DOOM
-47810;Dragon Age: Origins - Ultimate Edition
+47810;Dragon Age: Origins
 1659040;HITMAN World of Assassination
-345260;MEDIEVAL: Total War™ - Gold Edition
+345260;MEDIEVAL: Total War™
 646570;Slay the Spire
 404730;Wasteland 2: Director's Cut
+2344520;Diablo® IV
+1659420;UNCHARTED™: Legacy of Thieves Collection
+no-one-lives-forever;No One Lives Forever;https://www.mobygames.com/game/2617/the-operative-no-one-lives-forever/
+dead-nation;Dead Nation;https://www.mobygames.com/game/64615/dead-nation/
+cannon-fodder;Cannon Fodder;https://www.mobygames.com/game/210/cannon-fodder/
+3240220;Grand Theft Auto V
+1405790;John Wick Hex
+365590;Tom Clancy’s The Division™
+bloodborne;Bloodborne;https://www.playstation.com/en-us/games/bloodborne/
+610370;Desperados III
+starcraft;Starcraft II;https://starcraft2.blizzard.com/en-us/
+wow;World Of Warcraft;https://worldofwarcraft.blizzard.com/
+2229850;Command & Conquer Red Alert™ 2
+704450;Neverwinter Nights
+32370;STAR WARS™ Knights of the Old Republic™
+22600;Worms Reloaded
+lemmings;Lemmings;https://www.mobygames.com/game/683/lemmings/

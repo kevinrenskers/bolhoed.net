@@ -80,9 +80,17 @@ func fetchAlbums() async throws -> [Item<AlbumMetadata>] {
 
   // Only ask iTunes about albums we don't already have art for, so a rebuild does no networking
   let missing = ids.filter { !posterPath(id: $0).exists }
-  let artworkURLs = missing.isEmpty ? [:] : await fetchArtworkURLs(ids: missing)
+  let onAppleMusic = missing.filter { Int($0) != nil }
+  let artworkURLs = onAppleMusic.isEmpty ? [:] : await fetchArtworkURLs(ids: onAppleMusic)
 
   for id in missing {
+    // Albums that aren't on Apple Music have a slug instead of a collection id, so there's
+    // nothing to look up
+    guard Int(id) != nil else {
+      print("⚠️ \(id) isn't on Apple Music, add \(posterPath(id: id)) by hand")
+      continue
+    }
+
     await downloadArtwork(id: id, artworkURL: artworkURLs[id])
   }
 
@@ -92,7 +100,8 @@ func fetchAlbums() async throws -> [Item<AlbumMetadata>] {
       id: row["Id"]!,
       artist: row["Artist"]!,
       title: row["Title"]!,
-      year: Int(row["Year"]!) ?? 0
+      year: Int(row["Year"]!) ?? 0,
+      url: row["URL"]?.nonEmpty
     )
     return Item(title: metadata.title, metadata: metadata)
   }

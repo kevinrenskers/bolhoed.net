@@ -18,7 +18,7 @@ func renderAlbums(context: ItemsRenderingContext<AlbumMetadata>) -> Node {
       ul(class: "grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5") {
         context.items.map { album in
           li {
-            if let url = album.metadata.appleMusicURL {
+            if let url = album.metadata.linkURL {
               a(class: "group block", href: url, target: "_blank") {
                 albumCardContents(album)
               }
@@ -42,7 +42,7 @@ private func albumCardContents(_ album: Item<AlbumMetadata>) -> Node {
       src: album.metadata.posterURL
     )
 
-    span(class: "absolute left-2 top-2 z-10 rounded-md bg-black/70 px-2 py-0.5 text-xs font-semibold tabular-nums text-zinc-300 backdrop-blur-sm") {
+    span(class: "absolute left-2 top-2 rounded-md bg-black/70 px-2 py-0.5 text-xs font-semibold tabular-nums text-zinc-300 backdrop-blur-sm") {
       "#\(album.metadata.position)"
     }
   }

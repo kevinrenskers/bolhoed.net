@@ -28,12 +28,7 @@ let package = Package(
         "SwiftCSV",
         .product(name: "SwiftDotenv", package: "swift-dotenv"),
       ],
-      resources: [
-        .copy("csv/albums.csv"),
-        .copy("csv/shows.csv"),
-        .copy("csv/movies.csv"),
-        .copy("csv/games.csv"),
-      ]
+      exclude: ["csv"]
     ),
   ]
 )

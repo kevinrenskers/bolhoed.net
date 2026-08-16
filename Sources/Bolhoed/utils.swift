@@ -12,3 +12,11 @@ private let csvFolder: Path = "Sources/Bolhoed/csv"
 func loadCSV(named name: String) throws -> CSV<Named> {
   try CSV<Named>(url: (csvFolder + "\(name).csv").url)
 }
+
+extension String {
+  /// Optional csv columns come back as an empty string, both when the field is empty and when
+  /// the row doesn't have it at all.
+  var nonEmpty: String? {
+    isEmpty ? nil : self
+  }
+}

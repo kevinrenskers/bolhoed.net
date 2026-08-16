@@ -30,14 +30,21 @@ struct AlbumMetadata: Metadata {
   let artist: String
   let title: String
   let year: Int
+  let url: String?
 
   var posterURL: String {
     "/static/posters/albums/\(id).jpg"
   }
 
-  /// Albums that aren't on Apple Music get a short hand-picked id instead of a collection id
+  /// Albums that aren't on Apple Music get a hand-picked slug instead of a collection id
   var appleMusicURL: String? {
-    id.count >= 8 ? "https://music.apple.com/album/\(id)" : nil
+    Int(id) != nil ? "https://music.apple.com/album/\(id)" : nil
+  }
+
+  /// The URL column from the csv wins, so an album can point anywhere. Albums with neither
+  /// a URL nor a store page aren't linked at all.
+  var linkURL: String? {
+    url ?? appleMusicURL
   }
 }
 
@@ -45,9 +52,21 @@ struct GameMetadata: Metadata {
   let position: Int
   let id: String
   let title: String
+  let url: String?
 
   var posterURL: String {
     "/static/posters/games/\(id).jpg"
+  }
+
+  /// Games that aren't on Steam get a hand-picked slug instead of an appid
+  var steamURL: String? {
+    Int(id) != nil ? "https://store.steampowered.com/app/\(id)/" : nil
+  }
+
+  /// The URL column from the csv wins, so a game can point anywhere. Games with neither
+  /// a URL nor a store page aren't linked at all.
+  var linkURL: String? {
+    url ?? steamURL
   }
 }
 

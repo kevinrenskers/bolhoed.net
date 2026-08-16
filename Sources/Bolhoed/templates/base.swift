@@ -13,10 +13,10 @@ enum Section: CaseIterable {
   var title: String {
     switch self {
       case .home: "Home"
-      case .games: "games"
-      case .shows: "tv shows"
-      case .movies: "movies"
-      case .albums: "albums"
+      case .games: "Games"
+      case .shows: "TV shows"
+      case .movies: "Movies"
+      case .albums: "Albums"
     }
   }
 
@@ -32,16 +32,7 @@ enum Section: CaseIterable {
 }
 
 func baseHtml(title pageTitle: String, section: Section, @NodeBuilder children: () -> NodeConvertible) -> Node {
-  let favorites: [Node] = Section.allCases
-    .filter { $0 != .home }
-    .enumerated()
-    .flatMap { index, favorite -> [Node] in
-      let link = navLink(favorite, currentSection: section)
-      guard index > 0 else { return [link] }
-      return [span(class: "text-white/40") { "/" }, link]
-    }
-
-  return html(lang: "en-US") {
+  html(lang: "en-US") {
     head {
       meta(charset: "utf-8")
       meta(content: "width=device-width, initial-scale=1", name: "viewport")
@@ -59,14 +50,15 @@ func baseHtml(title pageTitle: String, section: Section, @NodeBuilder children: 
       }
     }
     body(class: "bg-[#3a677d] flex min-h-screen flex-col text-zinc-100 antialiased \(section)") {
-      nav(class: "sticky top-0 z-10 border-b border-white/20 bg-black/30 backdrop-blur-md") {
-        div(class: "mx-auto flex max-w-6xl items-center justify-between gap-8 px-6 py-4 text-sm") {
-          navLink(.home, currentSection: section)
-
-          div(class: "flex items-center gap-2") {
-            span(class: "text-white/40") { "my favorite:" }
-            favorites
-          }
+      nav(class: "sticky top-0 z-50 border-b border-white/20 bg-black/30 backdrop-blur-md") {
+        div(class: "mx-auto flex max-w-6xl items-center gap-8 px-6 py-4 text-sm") {
+          Section.allCases
+            .enumerated()
+            .flatMap { index, favorite -> [Node] in
+              let link = navLink(favorite, currentSection: section)
+              guard index > 0 else { return [link] }
+              return [span(class: "text-white/40") { "/" }, link]
+            }
         }
       }
 

@@ -130,9 +130,16 @@ func fetchGames() async throws -> [Item<GameMetadata>] {
 
   // Only ask Steam about games we don't already have art for, so a rebuild does no networking
   let missing = ids.filter { !posterPath(id: $0).exists }
-  let assetURLs = missing.isEmpty ? [:] : await fetchAssetURLs(ids: missing)
+  let onSteam = missing.filter { Int($0) != nil }
+  let assetURLs = onSteam.isEmpty ? [:] : await fetchAssetURLs(ids: onSteam)
 
   for id in missing {
+    // Games that aren't on Steam have a slug instead of an appid, so there's nothing to ask for
+    guard Int(id) != nil else {
+      print("⚠️ \(id) isn't on Steam, add \(posterPath(id: id)) by hand")
+      continue
+    }
+
     await downloadCoverArt(id: id, assetURL: assetURLs[id])
   }
 
@@ -141,6 +148,7 @@ func fetchGames() async throws -> [Item<GameMetadata>] {
       position: index + 1,
       id: row["Id"]!,
       title: row["Title"]!,
+      url: row["URL"]?.nonEmpty
     )
     return Item(title: metadata.title, metadata: metadata)
   }
