@@ -9,13 +9,20 @@ WORKDIR /app
 
 # Pre-fetch Swift dependencies (cached unless the Package files change)
 COPY Package.swift Package.resolved ./
-RUN echo "Prefetching dependencies..." \
+RUN --mount=type=cache,target=/app/.build,sharing=locked \
+    echo "Prefetching dependencies..." \
     && swift package resolve
 
-# Pre-build the site generator (cached unless the sources change)
+# Pre-build the site generator (cached unless the sources change).
+# .build is a cache mount so SwiftPM's incremental state survives between
+# deploys: only the changed module recompiles instead of all ~419 units.
+# Because a cache mount isn't part of the image layer, the binary has to be
+# copied out of it here, and is run from /usr/local/bin below.
 COPY Sources ./Sources
-RUN echo "Prebuilding..." \
-    && swift build --product Bolhoed -c release
+RUN --mount=type=cache,target=/app/.build,sharing=locked \
+    echo "Prebuilding..." \
+    && swift build --product Bolhoed -c release \
+    && cp .build/release/Bolhoed /usr/local/bin/bolhoed
 
 # Copy all remaining files
 COPY . .
@@ -30,7 +37,7 @@ ENV TMDB_ACCESS_TOKEN=${TMDB_ACCESS_TOKEN}
 # Build the site, reusing the downloaded Tailwind binary between builds
 RUN --mount=type=cache,target=/root/.swifttailwind \
     echo "Starting website build..." \
-    && .build/release/Bolhoed
+    && bolhoed
 
 # Stage 2: Nginx runtime
 FROM nginx:alpine
