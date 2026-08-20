@@ -2,3 +2,4 @@ deploy
 .DS_Store
 .build
 .env
+tools
