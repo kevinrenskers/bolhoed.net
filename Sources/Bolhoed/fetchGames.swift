@@ -126,10 +126,19 @@ private func downloadCoverArt(id: String, assetURL: String?) async {
 
 func fetchGames() async throws -> [Item<GameMetadata>] {
   let csvFile = try loadCSV(named: "games")
-  let ids = csvFile.rows.map { $0["Id"]! }
+
+  let items = compactMapRows(csvFile) { position, row in
+    let metadata = try GameMetadata(
+      position: position,
+      id: row.required("Id"),
+      title: row.required("Title"),
+      url: row["URL"]?.nonEmpty
+    )
+    return Item(title: metadata.title, metadata: metadata)
+  }
 
   // Only ask Steam about games we don't already have art for, so a rebuild does no networking
-  let missing = ids.filter { !posterPath(id: $0).exists }
+  let missing = items.map(\.metadata.id).filter { !posterPath(id: $0).exists }
   let onSteam = missing.filter { Int($0) != nil }
   let assetURLs = onSteam.isEmpty ? [:] : await fetchAssetURLs(ids: onSteam)
 
@@ -143,13 +152,5 @@ func fetchGames() async throws -> [Item<GameMetadata>] {
     await downloadCoverArt(id: id, assetURL: assetURLs[id])
   }
 
-  return csvFile.rows.enumerated().map { index, row in
-    let metadata = GameMetadata(
-      position: index + 1,
-      id: row["Id"]!,
-      title: row["Title"]!,
-      url: row["URL"]?.nonEmpty
-    )
-    return Item(title: metadata.title, metadata: metadata)
-  }
+  return items
 }

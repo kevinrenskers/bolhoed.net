@@ -70,13 +70,13 @@ func downloadPoster(imdbID: String, kind: MediaKind) async {
 func fetch(csvName: String, kind: MediaKind) async throws -> [Item<ImdbMetadata>] {
   let csvFile = try loadCSV(named: csvName)
   
-  let items = csvFile.rows.enumerated().map { index, row in
-    let metadata = ImdbMetadata(
-      position: index + 1,
-      id: row["Id"]!,
-      title: row["Title"]!,
-      rating: Int(row["Rating"]!)!,
-      genres: row["Genres"]!.components(separatedBy: ", ")
+  let items = compactMapRows(csvFile) { position, row in
+    let metadata = try ImdbMetadata(
+      position: position,
+      id: row.required("Id"),
+      title: row.required("Title"),
+      rating: row.requiredInt("Rating"),
+      genres: row.required("Genres").components(separatedBy: ", ")
     )
     return Item(title: metadata.title, metadata: metadata)
   }

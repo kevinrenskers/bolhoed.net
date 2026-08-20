@@ -76,10 +76,21 @@ private func downloadArtwork(id: String, artworkURL: String?) async {
 
 func fetchAlbums() async throws -> [Item<AlbumMetadata>] {
   let csvFile = try loadCSV(named: "albums")
-  let ids = csvFile.rows.map { $0["Id"]! }
+
+  let items = compactMapRows(csvFile) { position, row in
+    let metadata = try AlbumMetadata(
+      position: position,
+      id: row.required("Id"),
+      artist: row.required("Artist"),
+      title: row.required("Title"),
+      year: row.requiredInt("Year"),
+      url: row["URL"]?.nonEmpty
+    )
+    return Item(title: metadata.title, metadata: metadata)
+  }
 
   // Only ask iTunes about albums we don't already have art for, so a rebuild does no networking
-  let missing = ids.filter { !posterPath(id: $0).exists }
+  let missing = items.map(\.metadata.id).filter { !posterPath(id: $0).exists }
   let onAppleMusic = missing.filter { Int($0) != nil }
   let artworkURLs = onAppleMusic.isEmpty ? [:] : await fetchArtworkURLs(ids: onAppleMusic)
 
@@ -94,15 +105,5 @@ func fetchAlbums() async throws -> [Item<AlbumMetadata>] {
     await downloadArtwork(id: id, artworkURL: artworkURLs[id])
   }
 
-  return csvFile.rows.enumerated().map { index, row in
-    let metadata = AlbumMetadata(
-      position: index + 1,
-      id: row["Id"]!,
-      artist: row["Artist"]!,
-      title: row["Title"]!,
-      year: Int(row["Year"]!) ?? 0,
-      url: row["URL"]?.nonEmpty
-    )
-    return Item(title: metadata.title, metadata: metadata)
-  }
+  return items
 }
