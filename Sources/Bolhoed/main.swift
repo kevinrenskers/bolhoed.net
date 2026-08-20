@@ -97,7 +97,7 @@ try await Saga(input: "content", output: "deploy")
   // Load tv shows
   .register(
     metadata: ImdbMetadata.self,
-    fetch: { try await fetch(csvName: "shows") },
+    fetch: { try await fetch(csvName: "shows", kind: .tv) },
     cacheKey: nil,
     sorting: { $0.metadata.position < $1.metadata.position },
     writers: [.listWriter(swim(renderShows), output: "shows/index.html")]
@@ -106,7 +106,7 @@ try await Saga(input: "content", output: "deploy")
   // Load movies
   .register(
     metadata: ImdbMetadata.self,
-    fetch: { try await fetch(csvName: "movies") },
+    fetch: { try await fetch(csvName: "movies", kind: .movie) },
     cacheKey: nil,
     sorting: { $0.metadata.position < $1.metadata.position },
     writers: [.listWriter(swim(renderMovies), output: "movies/index.html")]

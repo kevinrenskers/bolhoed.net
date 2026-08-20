@@ -9,6 +9,13 @@ import SwiftCSV
 
 private let postersFolder: Path = "content/static/posters/imdb"
 
+/// TMDB sometimes has an unrelated title tagged with the same IMDb id, so we pick
+/// the poster from the kind of result we're actually looking for.
+enum MediaKind {
+  case movie
+  case tv
+}
+
 // TMDB's /find endpoint, which looks up a title by its IMDb id
 private struct TMDBFindResponse: Decodable {
   struct Result: Decodable {
@@ -18,14 +25,18 @@ private struct TMDBFindResponse: Decodable {
   let tvResults: [Result]
   let movieResults: [Result]
   
-  var posterPath: String? {
-    (tvResults + movieResults).compactMap(\.posterPath).first
+  func posterPath(preferring kind: MediaKind) -> String? {
+    let results = switch kind {
+      case .movie: movieResults + tvResults
+      case .tv: tvResults + movieResults
+    }
+    return results.compactMap(\.posterPath).first
   }
 }
 
 /// Downloads the poster for an IMDb id into content/static/posters/{id}.jpg.
 /// Does nothing when we already have the image on disk.
-func downloadPoster(imdbID: String) async {
+func downloadPoster(imdbID: String, kind: MediaKind) async {
   let destination = postersFolder + "\(imdbID).jpg"
   guard !destination.exists else { return }
   
@@ -43,7 +54,7 @@ func downloadPoster(imdbID: String) async {
     let decoder = JSONDecoder()
     decoder.keyDecodingStrategy = .convertFromSnakeCase
     
-    guard let posterPath = try decoder.decode(TMDBFindResponse.self, from: data).posterPath else {
+    guard let posterPath = try decoder.decode(TMDBFindResponse.self, from: data).posterPath(preferring: kind) else {
       print("⚠️ No poster found for \(imdbID)")
       return
     }
@@ -56,7 +67,7 @@ func downloadPoster(imdbID: String) async {
   }
 }
 
-func fetch(csvName: String) async throws -> [Item<ImdbMetadata>] {
+func fetch(csvName: String, kind: MediaKind) async throws -> [Item<ImdbMetadata>] {
   let csvFile = try loadCSV(named: csvName)
   
   let items = csvFile.rows.enumerated().map { index, row in
@@ -71,7 +82,7 @@ func fetch(csvName: String) async throws -> [Item<ImdbMetadata>] {
   }
   
   for item in items {
-    await downloadPoster(imdbID: item.metadata.id)
+    await downloadPoster(imdbID: item.metadata.id, kind: kind)
   }
   
   return items
