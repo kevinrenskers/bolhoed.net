@@ -47,6 +47,9 @@ func baseHtml(title pageTitle: String, section: Section, @NodeBuilder children: 
         link(color: "#3a677d", href: "/safari-pinned-tab.svg", rel: "mask-icon")
         meta(content: "#3a677d", name: "msapplication-TileColor")
         meta(content: "#294858", name: "theme-color")
+        meta(content: "https://bolhoed.net/static/opengraph.png", customAttributes: ["property": "og:image"])
+        meta(content: "1200", customAttributes: ["property": "og:image:width"])
+        meta(content: "630", customAttributes: ["property": "og:image:height"])
         if !Saga.isDev {
           script(defer: true, src: "/script.js", customAttributes: ["data-website-id": "dacace94-20ac-45f3-96f9-2d35b19d665e"])
         }
