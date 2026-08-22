@@ -47,7 +47,7 @@ func baseHtml(title pageTitle: String, section: Section, @NodeBuilder children: 
         link(color: "#3a677d", href: "/safari-pinned-tab.svg", rel: "mask-icon")
         meta(content: "#3a677d", name: "msapplication-TileColor")
         meta(content: "#294858", name: "theme-color")
-        meta(content: "https://bolhoed.net/static/opengraph.png", customAttributes: ["property": "og:image"])
+        meta(content: "https://www.bolhoed.net/static/opengraph.png", customAttributes: ["property": "og:image"])
         meta(content: "1200", customAttributes: ["property": "og:image:width"])
         meta(content: "630", customAttributes: ["property": "og:image:height"])
         if !Saga.isDev {
@@ -114,7 +114,7 @@ func renderPage(context: ItemRenderingContext<EmptyMetadata>) -> Node {
   baseHtml(title: "Bolhoed.net", section: .home) {
     main(class: "px-6 py-12 md:mt-auto md:mr-12 md:mb-12 md:ml-auto md:max-w-xl md:rounded-2xl md:border-4 md:border-white/20 md:bg-black/30 md:p-10 md:shadow-2xl md:backdrop-blur-md") {
       article(class: "[&_a]:text-white [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-accent [&_h1]:mb-6 [&_p]:mt-4") {
-        h1 { context.item.title }
+        h1 { Node.raw(context.item.title) }
         Node.raw(context.item.body)
       }
 

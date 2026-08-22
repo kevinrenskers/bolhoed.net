@@ -1,4 +1,4 @@
-# Hey there, I'm Kevin 👋
+# Hey there, I'm&nbsp;Kevin&nbsp;👋
 
 I'm a Dutch freelance product & engineering lead. My professional site is [loopwerk.io](https://www.loopwerk.io/), where you can find articles and my open source projects. This is my personal site where I share my favorite things.
 
