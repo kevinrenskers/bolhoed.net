@@ -42,7 +42,7 @@ function enhance(type) {
       event.dataTransfer.setDragImage(poster, x, y);
     }
 
-    requestAnimationFrame(() => dragged.classList.add("opacity-40"));
+    requestAnimationFrame(() => (dragged.style.opacity = "0.4"));
   });
 
   grid.addEventListener("dragover", (event) => {
@@ -69,7 +69,7 @@ function enhance(type) {
 
   grid.addEventListener("dragend", () => {
     if (!dragged) return;
-    dragged.classList.remove("opacity-40");
+    dragged.style.opacity = "";
     dragged = null;
   });
 }
