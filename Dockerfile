@@ -19,8 +19,8 @@ RUN --mount=type=cache,target=/app/.build,sharing=locked \
 # copied out of it here, and is run from /usr/local/bin below.
 COPY Sources ./Sources
 RUN --mount=type=cache,target=/app/.build,sharing=locked \
-    swift build --product Bolhoed -c release \
-    && cp .build/release/Bolhoed /usr/local/bin/bolhoed
+    swift build --product Bolhoed \
+    && cp .build/debug/Bolhoed /usr/local/bin/bolhoed
 
 # Copy all remaining files
 COPY . .
