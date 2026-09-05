@@ -10,8 +10,7 @@ WORKDIR /app
 # Pre-fetch Swift dependencies (cached unless the Package files change)
 COPY Package.swift Package.resolved ./
 RUN --mount=type=cache,target=/app/.build,sharing=locked \
-    echo "Prefetching dependencies..." \
-    && swift package resolve
+    swift package resolve
 
 # Pre-build the site generator (cached unless the sources change).
 # .build is a cache mount so SwiftPM's incremental state survives between
@@ -20,8 +19,7 @@ RUN --mount=type=cache,target=/app/.build,sharing=locked \
 # copied out of it here, and is run from /usr/local/bin below.
 COPY Sources ./Sources
 RUN --mount=type=cache,target=/app/.build,sharing=locked \
-    echo "Prebuilding..." \
-    && swift build --product Bolhoed -c release \
+    swift build --product Bolhoed -c release \
     && cp .build/release/Bolhoed /usr/local/bin/bolhoed
 
 # Copy all remaining files
@@ -36,8 +34,7 @@ ENV TMDB_ACCESS_TOKEN=${TMDB_ACCESS_TOKEN}
 
 # Build the site, reusing the downloaded Tailwind binary between builds
 RUN --mount=type=cache,target=/root/.swifttailwind \
-    echo "Starting website build..." \
-    && bolhoed
+    bolhoed
 
 # Stage 2: Nginx runtime
 FROM nginx:alpine
@@ -47,9 +44,3 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy built static files from builder
 COPY --from=builder /app/deploy /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
-
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
