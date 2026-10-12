@@ -9,15 +9,15 @@ Still or sparkling water: still, from the Oeschinen lake near Kandersteg, Switze
 
 Poppadoms or bread: freshly baked bread with olive oil and salt.
 
-Starter: spicy (but not too spicy) Korean fried chicken. I also like karaage chicken, but the Korean ones are usually more flavorful. 
+Starter: spicy (but not too spicy) Korean fried chicken. I also like karaage chicken, but the Korean version is usually more flavorful. 
 
 Main course: a big bowl of noodle soup with chicken from Noodle Station in Reykjavik, Iceland. Specifically from their old location at Skólavörðustígur, circa 2014, when I lived around the corner. The most amazing food, I'd eat it twice a week.
 
 Honorable munchion: Tonkotsu ramen from Tensai Ramen in Rotterdam. With extra egg and extra pork. Not quite the same nostalgia as Noodle Station but possibly an even better soup.
 
-The main course was actually really hard to choose because I also absolutely love tacos, Thai curry, and hamburgers. But as it's getting colder now, all I want to eat is a good bowl of soup.
+The main course was actually really hard to choose because I also absolutely love tacos, Thai curry, and hamburgers. But a good bowl of ramen feeds my soul like nothing else can.
 
-Side dish: I don't think I'd have a side dish with a bowl of soup, plus I'd have no space for it with the starter and dessert anyway.
+Side dish: I don't think I'd have a side dish with my soup, plus I'd have no space for it with the starter and dessert anyway.
 
 Drink: I don't drink alcohol, but I do love a good 0% wheat beer, especially the German ones. But I'll choose something that I've had once and could never find again: tarragon-ginger soda from Wostok.
 
