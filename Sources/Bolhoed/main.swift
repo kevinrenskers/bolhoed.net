@@ -70,6 +70,10 @@ struct GameMetadata: Metadata {
   }
 }
 
+struct PageMetadata: Metadata {
+  let section: Section?
+}
+
 try await Saga(input: "content", output: "deploy")
   // Compile tailwind to output.css
   .beforeRead { saga in
@@ -130,9 +134,18 @@ try await Saga(input: "content", output: "deploy")
     writers: [.listWriter(swim(renderAlbums), output: "albums/index.html")]
   )
 
-  // The rest of the pages
+  // Home
   .register(
     metadata: EmptyMetadata.self,
+    readers: [.parsleyMarkdownReader],
+    filter: { $0.relativeSource == "index.md" },
+    claimExcludedItems: false,
+    writers: [.itemWriter(swim(renderHome))]
+  )
+
+  // The rest of the pages
+  .register(
+    metadata: PageMetadata.self,
     readers: [.parsleyMarkdownReader],
     itemWriteMode: .keepAsFile,
     writers: [.itemWriter(swim(renderPage))]

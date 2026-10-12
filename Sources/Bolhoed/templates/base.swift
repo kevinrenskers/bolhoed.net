@@ -3,13 +3,14 @@ import HTML
 import Saga
 import SagaSwimRenderer
 
-enum Section: CaseIterable {
+enum Section: String, CaseIterable, Codable {
   case home
   case games
   case shows
   case movies
   case albums
-
+  case food
+  
   var title: String {
     switch self {
       case .home: "Home"
@@ -17,6 +18,7 @@ enum Section: CaseIterable {
       case .shows: "TV shows"
       case .movies: "Movies"
       case .albums: "Albums"
+      case .food: "Food"
     }
   }
 
@@ -27,11 +29,12 @@ enum Section: CaseIterable {
       case .shows: "/shows/"
       case .movies: "/movies/"
       case .albums: "/albums/"
+      case .food: "/food/"
     }
   }
 }
 
-func baseHtml(title pageTitle: String, section: Section, @NodeBuilder children: () -> NodeConvertible) -> Node {
+func baseHtml(title pageTitle: String, section: Section?, @NodeBuilder children: () -> NodeConvertible) -> Node {
   return [
     .documentType("html"),
     html(lang: "en-US") {
@@ -54,7 +57,7 @@ func baseHtml(title pageTitle: String, section: Section, @NodeBuilder children: 
           script(defer: true, src: "/script.js", customAttributes: ["data-website-id": "dacace94-20ac-45f3-96f9-2d35b19d665e"])
         }
       }
-      body(class: "bg-[#3a677d] flex min-h-screen flex-col text-zinc-100 antialiased \(section)") {
+      body(class: "bg-[#3a677d] flex min-h-screen flex-col text-zinc-100 antialiased \(section?.rawValue ?? "")") {
         nav(class: "sticky top-0 z-50 border-b border-white/20 md:backdrop-blur-md bg-[#294858] md:bg-black/30") {
           div(class: "relative mx-auto flex max-w-6xl items-center px-6 py-4 text-sm") {
             input(class: "peer sr-only", id: "nav-toggle", type: "checkbox")
@@ -99,7 +102,7 @@ func baseHtml(title pageTitle: String, section: Section, @NodeBuilder children: 
   ]
 }
 
-private func navLink(_ section: Section, currentSection: Section) -> Node {
+private func navLink(_ section: Section, currentSection: Section?) -> Node {
   a(
     class: section == currentSection
       ? "font-medium text-accent"
@@ -110,7 +113,20 @@ private func navLink(_ section: Section, currentSection: Section) -> Node {
   }
 }
 
-func renderPage(context: ItemRenderingContext<EmptyMetadata>) -> Node {
+func renderPage(context: ItemRenderingContext<PageMetadata>) -> Node {
+  baseHtml(title: context.item.title, section: context.item.metadata.section) {
+    main(class: "mx-auto w-full max-w-6xl px-6 py-12") {
+      article(class: "[&_a]:text-white [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-accent [&_h1]:mb-6 [&_p]:mt-4") {
+        h1 {  context.item.title }
+        div(class: "max-w-2xl") {
+          Node.raw(context.item.body)
+        }
+      }
+    }
+  }
+}
+
+func renderHome(context: ItemRenderingContext<EmptyMetadata>) -> Node {
   baseHtml(title: "Bolhoed.net", section: .home) {
     main(class: "px-6 py-12 md:mt-auto md:mr-12 md:mb-12 md:ml-auto md:max-w-xl md:rounded-2xl md:border-4 md:border-white/20 md:bg-black/30 md:p-10 md:shadow-2xl md:backdrop-blur-md") {
       article(class: "[&_a]:text-white [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-accent [&_h1]:mb-6 [&_p]:mt-4") {
