@@ -1,4 +1,4 @@
-deploy
+.deploy
 .DS_Store
 .build
 .env

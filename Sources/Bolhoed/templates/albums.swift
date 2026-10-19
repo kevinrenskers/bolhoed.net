@@ -4,35 +4,33 @@ import Saga
 import SagaSwimRenderer
 
 func renderAlbums(context: ItemsRenderingContext<AlbumMetadata>) -> Node {
-  baseHtml(title: "My favorite albums", section: .albums) {
-    main(class: "mx-auto max-w-6xl px-6 py-12") {
-      header(class: "mb-12 border-b border-white/10 pb-8") {
-        h1 {
-          "My favorite albums"
-        }
-        p(class: "mt-4 max-w-2xl text-white/80") {
-          "\(context.items.count) albums, ranked"
-        }
+  baseHtml(title: "Bolhoed.net | My favorite albums", section: .albums) {
+    header(class: "page-header") {
+      h1 {
+        "My favorite albums"
       }
+      p {
+        "\(context.items.count) albums, ranked"
+      }
+    }
 
-      ul(class: "grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5") {
-        context.items.map { album in
-          li {
-            if let url = album.metadata.linkURL {
-              a(class: "group block", href: url, target: "_blank") {
-                albumCardContents(album)
-              }
-            } else {
+    ul(class: "grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5") {
+      context.items.map { album in
+        li {
+          if let url = album.metadata.linkURL {
+            a(class: "group block", href: url, target: "_blank") {
               albumCardContents(album)
             }
+          } else {
+            albumCardContents(album)
           }
         }
       }
-      
-      if Saga.isDev {
-        script(src: "/static/enhance.js")
-        Node.raw("<script>enhance('albums');</script>")
-      }
+    }
+    
+    if Saga.isDev {
+      script(src: "/static/enhance.js")
+      Node.raw("<script>enhance('albums');</script>")
     }
   }
 }

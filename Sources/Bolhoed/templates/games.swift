@@ -4,35 +4,33 @@ import Saga
 import SagaSwimRenderer
 
 func renderGames(context: ItemsRenderingContext<GameMetadata>) -> Node {
-  baseHtml(title: "My favorite games", section: .games) {
-    main(class: "mx-auto max-w-6xl px-6 py-12") {
-      header(class: "mb-12 border-b border-white/10 pb-8") {
-        h1 {
-          "My favorite games"
-        }
-        p(class: "mt-4 max-w-2xl text-white/80") {
-          "\(context.items.count) games, ranked"
-        }
+  baseHtml(title: "Bolhoed.net | My favorite games", section: .games) {
+    header(class: "page-header") {
+      h1 {
+        "My favorite games"
       }
+      p {
+        "\(context.items.count) games, ranked"
+      }
+    }
 
-      ul(class: "grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5") {
-        context.items.map { game in
-          li {
-            if let url = game.metadata.linkURL {
-              a(class: "group block", href: url, target: "_blank") {
-                gameCardContents(game)
-              }
-            } else {
+    ul(class: "grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5") {
+      context.items.map { game in
+        li {
+          if let url = game.metadata.linkURL {
+            a(class: "group block", href: url, target: "_blank") {
               gameCardContents(game)
             }
+          } else {
+            gameCardContents(game)
           }
         }
       }
-      
-      if Saga.isDev {
-        script(src: "/static/enhance.js")
-        Node.raw("<script>enhance('games');</script>")
-      }
+    }
+    
+    if Saga.isDev {
+      script(src: "/static/enhance.js")
+      Node.raw("<script>enhance('games');</script>")
     }
   }
 }

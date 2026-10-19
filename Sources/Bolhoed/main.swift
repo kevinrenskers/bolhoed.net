@@ -7,6 +7,7 @@ import SwiftTailwind
 import SagaPathKit
 import SwiftCSV
 import SwiftDotenv
+import SagaUtils
 
 try? Dotenv.configure()
 
@@ -70,11 +71,11 @@ struct GameMetadata: Metadata {
   }
 }
 
-struct PageMetadata: Metadata {
-  let section: Section?
+struct ArticleMetadata: Metadata {
+  let summary: String
 }
 
-try await Saga(input: "content", output: "deploy")
+try await Saga(input: "content", output: ".deploy")
   // Compile tailwind to output.css
   .beforeRead { saga in
     if let path = saga.buildReason.changedFile(),
@@ -97,6 +98,18 @@ try await Saga(input: "content", output: "deploy")
 
   // Same for the posters we download during the build
   .ignoreChanges("content/static/posters/*/*")
+
+  // Blog (articles)
+  .register(
+    folder: "blog",
+    metadata: ArticleMetadata.self,
+    readers: [.parsleyMarkdownReader],
+    itemProcessor: sequence(publicationDateInFilename, swiftSoupProcessor(processExternalLinks)),
+    writers: [
+      .itemWriter(swim(renderArticle)),
+      .listWriter(swim(renderArticles)),
+    ]
+  )
 
   // Load tv shows
   .register(
@@ -134,6 +147,9 @@ try await Saga(input: "content", output: "deploy")
     writers: [.listWriter(swim(renderAlbums), output: "albums/index.html")]
   )
 
+  // 404
+  .createPage("404.html", using: swim(render404))
+
   // Home
   .register(
     metadata: EmptyMetadata.self,
@@ -141,14 +157,6 @@ try await Saga(input: "content", output: "deploy")
     filter: { $0.relativeSource == "index.md" },
     claimExcludedItems: false,
     writers: [.itemWriter(swim(renderHome))]
-  )
-
-  // The rest of the pages
-  .register(
-    metadata: PageMetadata.self,
-    readers: [.parsleyMarkdownReader],
-    itemWriteMode: .keepAsFile,
-    writers: [.itemWriter(swim(renderPage))]
   )
 
   // Minify all HTML output (prod only)

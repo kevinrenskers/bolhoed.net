@@ -1,5 +1,9 @@
 @import "tailwindcss" source(none);
 
+@plugin "@tailwindcss/typography" {
+  target: legacy;
+}
+
 @source "../../Sources/Bolhoed/templates/*.swift";
 
 @theme {
@@ -7,11 +11,65 @@
 }
 
 @layer base {
-  h1 {
-    @apply text-4xl font-bold tracking-tight text-white sm:text-5xl;
-  }
-
   body.home {
     @apply md:bg-[url(/static/ape.svg)] bg-contain bg-left-bottom bg-fixed bg-no-repeat;
+  }
+}
+
+@layer utilities {
+  .prose {
+    --tw-prose-body: var(--color-white);
+    --tw-prose-headings: var(--color-white);
+    --tw-prose-hr: var(--color-white);
+    --tw-prose-bullets: var(--color-white);
+    --tw-prose-counters: var(--color-white);
+    --tw-prose-quotes: var(--color-white);
+    --tw-prose-quote-borders: var(--color-white);
+    @apply max-w-2xl links;
+  }
+  
+  .prose blockquote {
+    font-style: normal;
+    border-inline-start-width: 2px;
+  }
+  
+  .prose blockquote p:first-of-type::before,
+  .prose blockquote p:last-of-type::after {
+    content: none;
+  }
+  
+  .prose strong {
+    color: inherit;
+    font-weight: 800;
+  }
+
+  .prose h1 {
+    @apply heading-1;
+  }
+
+  .prose h2 {
+    @apply mt-10 mb-1;
+  }
+}
+
+@utility heading-1 {
+  @apply text-4xl/[1.1111111] font-extrabold text-white;
+}
+
+@utility links {
+  & a {
+    @apply text-white underline underline-offset-2 hover:text-accent font-normal;
+  }
+}
+
+@utility page-header {
+  @apply mb-12 border-b border-white/10 pb-8;
+
+  & h1 {
+    @apply heading-1;
+  }
+
+  & p {
+    @apply mt-4 max-w-2xl text-white/80;
   }
 }

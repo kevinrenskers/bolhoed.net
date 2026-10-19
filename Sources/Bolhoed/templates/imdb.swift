@@ -4,49 +4,45 @@ import Saga
 import SagaSwimRenderer
 
 func renderShows(context: ItemsRenderingContext<ImdbMetadata>) -> Node {
-  baseHtml(title: "My favorite TV Shows", section: .shows) {
-    main(class: "mx-auto max-w-6xl px-6 py-12") {
-      header(class: "mb-12 border-b border-white/10 pb-8") {
-        h1 {
-          "My favorite TV Shows"
-        }
-        p(class: "mt-4 max-w-2xl text-white/80") {
-          "\(context.items.count) shows, ranked"
-        }
+  baseHtml(title: "Bolhoed.net | My favorite TV Shows", section: .shows) {
+    header(class: "page-header") {
+      h1 {
+        "My favorite TV Shows"
       }
+      p {
+        "\(context.items.count) shows, ranked"
+      }
+    }
 
-      ul(class: "grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5") {
-        context.items.map(showCard)
-      }
-      
-      if Saga.isDev {
-        script(src: "/static/enhance.js")
-        Node.raw("<script>enhance('shows');</script>")
-      }
+    ul(class: "grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5") {
+      context.items.map(showCard)
+    }
+    
+    if Saga.isDev {
+      script(src: "/static/enhance.js")
+      Node.raw("<script>enhance('shows');</script>")
     }
   }
 }
 
 func renderMovies(context: ItemsRenderingContext<ImdbMetadata>) -> Node {
-  baseHtml(title: "My favorite movies", section: .movies) {
-    main(class: "mx-auto max-w-6xl px-6 py-12") {
-      header(class: "mb-12 border-b border-white/10 pb-8") {
-        h1 {
-          "My favorite movies"
-        }
-        p(class: "mt-4 max-w-2xl text-white/80") {
-          "\(context.items.count) movies, ranked"
-        }
+  baseHtml(title: "Bolhoed.net | My favorite movies", section: .movies) {
+    header(class: "page-header") {
+      h1 {
+        "My favorite movies"
       }
+      p {
+        "\(context.items.count) movies, ranked"
+      }
+    }
 
-      ul(class: "grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5") {
-        context.items.map(showCard)
-      }
-      
-      if Saga.isDev {
-        script(src: "/static/enhance.js")
-        Node.raw("<script>enhance('movies');</script>")
-      }
+    ul(class: "grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5") {
+      context.items.map(showCard)
+    }
+    
+    if Saga.isDev {
+      script(src: "/static/enhance.js")
+      Node.raw("<script>enhance('movies');</script>")
     }
   }
 }
