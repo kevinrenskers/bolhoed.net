@@ -43,6 +43,7 @@ func baseHtml(title pageTitle: String, section: Section?, @NodeBuilder children:
         meta(content: "width=device-width, initial-scale=1", name: "viewport")
         title { pageTitle }
         link(href: Saga.hashed("/static/output.css"), rel: "stylesheet")
+        link(href: "/blog/feed.xml", rel: "alternate", title: SiteMetadata.name, type: "application/atom+xml")
         link(href: "/apple-touch-icon.png", rel: "apple-touch-icon", sizes: "180x180")
         link(href: "/favicon-32x32.png", rel: "icon", sizes: "32x32", type: "image/png")
         link(href: "/favicon-16x16.png", rel: "icon", sizes: "16x16", type: "image/png")

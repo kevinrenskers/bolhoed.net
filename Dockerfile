@@ -4,6 +4,12 @@
 # Using Ubuntu 24.04 (Noble)
 FROM swift:6.1-noble AS builder
 
+# Install system dependencies
+RUN apt-get update && apt-get --no-install-recommends install -y \
+    git \
+    git-restore-mtime \
+    && rm -rf /var/lib/apt/lists/*
+
 # Set working directory
 WORKDIR /app
 
@@ -24,6 +30,13 @@ RUN --mount=type=cache,target=/app/.build,sharing=locked \
 
 # Copy all remaining files
 COPY . .
+
+# Clone the repository to get .git directory for git-restore-mtime
+# This is necessary because Coolify doesn't include .git in build context
+RUN git clone https://github.com/kevinrenskers/bolhoed.net.git /tmp/repo \
+    && cp -r /tmp/repo/.git . \
+    && git restore-mtime --oldest-time \
+    && rm -rf .git /tmp/repo
 
 # Environment variables coming from Coolify. Add an ARG + ENV pair per variable,
 # and mark the variable as available at buildtime in Coolify, otherwise it won't

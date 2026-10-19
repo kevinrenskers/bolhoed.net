@@ -13,6 +13,13 @@ try? Dotenv.configure()
 
 let tailwind = SwiftTailwind(version: "4.2.4")
 
+enum SiteMetadata {
+  static let url = URL(string: "https://www.bolhoed.net")!
+  static let name = "Bolhoed.net"
+  static let author = "Kevin Renskers"
+  static let now = Date()
+}
+
 struct ImdbMetadata: Metadata {
   let position: Int
   let id: String
@@ -75,6 +82,40 @@ struct ArticleMetadata: Metadata {
   let summary: String
 }
 
+extension Item where M == ArticleMetadata {
+  var year: Int {
+    return Calendar.current.component(.year, from: date)
+  }
+  
+  var creationDate: Date {
+    // Use file modification date if it matches the filename date (accounting for timezone)
+    // The git-restore-mtime script should have set proper file timestamps to the FIRST commit
+    let amsterdamTimeZone = TimeZone(identifier: "Europe/Amsterdam")!
+    var calendar = Calendar.current
+    calendar.timeZone = amsterdamTimeZone
+    
+    let fileCreationComponents = calendar.dateComponents([.year, .month, .day], from: lastModified)
+    let selfDateComponents = calendar.dateComponents([.year, .month, .day], from: date)
+    
+    // Check if the dates match in Amsterdam timezone
+    if fileCreationComponents.year == selfDateComponents.year,
+       fileCreationComponents.month == selfDateComponents.month,
+       fileCreationComponents.day == selfDateComponents.day
+    {
+      return lastModified
+    }
+    
+    // Fallback to self.date (filename date at noon)
+    var components = Calendar.current.dateComponents([.year, .month, .day], from: date)
+    components.hour = 12
+    components.minute = 0
+    components.second = 0
+    components.timeZone = TimeZone.current
+    
+    return Calendar.current.date(from: components) ?? date
+  }
+}
+
 try await Saga(input: "content", output: ".deploy")
   // Compile tailwind to output.css
   .beforeRead { saga in
@@ -108,6 +149,16 @@ try await Saga(input: "content", output: ".deploy")
     writers: [
       .itemWriter(swim(renderArticle)),
       .listWriter(swim(renderArticles)),
+      .listWriter(
+        Saga.atomFeed(
+          title: SiteMetadata.name,
+          author: SiteMetadata.author,
+          baseURL: SiteMetadata.url,
+          summary: \.metadata.summary,
+          dateKeyPath: \.creationDate
+        ),
+        output: "feed.xml"
+      ),
     ]
   )
 
