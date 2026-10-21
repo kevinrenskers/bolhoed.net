@@ -3,7 +3,7 @@ summary: I decided to find the best country in the world to immigrate to.
 ---
 
 # Finding the best country in the world
-I'm no stranger to living abroad: I moved to Iceland in January 2012, and came back to the Netherlands in August 2015. And eleven years later, it's starting to itch again. I feel the need to move to a new place. But where? I decided to use data to find objectively (according to some subjective rules) the best country in the world.
+I'm no stranger to living abroad: I moved to Iceland in January 2012, and came back to the Netherlands in August 2015. And eleven years later, it's starting to itch again. I feel the need to move to a new place. But where? I decided to use a bunch of data to find the best country in the world.
 
 | Country | Score |
 |---|---:|
@@ -206,8 +206,6 @@ I'm no stranger to living abroad: I moved to Iceland in January 2012, and came b
 | South Sudan | −30 |
 {.countries}
 
-So... according to this list I should move back to Iceland, move to Norway, or stay in the Netherlands. Not entirely unexpected, since Norway was already on my mind before making this list, but it's nice that the data backs it up.
-
 The score is made up of several categories:
 
 * Language. Bonus points when the majority of people understand English or Dutch. A penalty against countries that don't use the Latin alphabet, since that makes everything so much harder.
@@ -226,5 +224,7 @@ The score is made up of several categories:
 Politics, quality of life, and safety are the three most important factors for me when looking at countries I'd want to live in, so the biggest points (as well as the biggest penalties) could be had in these categories, ranging from -5 to +5. Most other categories go from -2 to +2.
 
 It didn't come as a surprise that the United States scored negative one point. I don't even want to go on a holiday there, let alone live there. Sorry.
+
+According to this list I should move back to Iceland, move to Norway, or stay in the Netherlands. Not entirely unexpected, since Norway was already on my mind before making this list, but it's nice that the data backs it up.
 
 I'm pretty sure I'll end up in Norway, Denmark, Austria, or Ireland. I loved my time in Iceland, but it's way too touristy and overcrowded now, so I don't see myself living there again. Denmark and Austria have the advantage of being within driving distance of my family and fiends in the Netherlands, while Norway has the most picturesque nature, Denmark the best bicycle story, and Ireland the best vibes.
