@@ -6,4 +6,4 @@ My hobbies and interests include playing [PC games](/games/), playing Dungeons &
 
 I choose cats over dogs, tea over coffee, and winter over summer. I’ve lived in Iceland for almost four years, and my favorite foods are ramen, hamburgers, tacos, and Thai. I'm slightly autistic, more than slightly lactose intolerant, and also suffer from misophonia and IBS.
 
-This site is built with [Saga](https://github.com/loopwerk/Saga), a static site generator written in Swift.
+This site is built with [Saga](https://github.com/loopwerk/Saga), a static site generator written in Swift, and the source code is available on [GitHub](https://github.com/kevinrenskers/bolhoed.net).

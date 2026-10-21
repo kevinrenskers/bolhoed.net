@@ -243,6 +243,14 @@ try await Saga(input: "content", output: ".deploy")
     writers: [.itemWriter(swim(renderHome))]
   )
 
+  // Other markdown pages, like the legal notice
+  .register(
+    metadata: EmptyMetadata.self,
+    readers: [.parsleyMarkdownReader],
+    itemProcessor: swiftSoupProcessor(processExternalLinks),
+    writers: [.itemWriter(swim(renderPage))]
+  )
+
   // Sitemap
   .createPage("sitemap.xml", using: Saga.sitemap(baseURL: SiteMetadata.url, filter: { path, item in
     if path.string.hasSuffix("feed.xml") {

@@ -128,6 +128,13 @@ func baseHtml(title pageTitle: String, section: Section?, @NodeBuilder children:
         main(class: "container flex flex-1 flex-col py-8 md:py-16") {
           children()
         }
+
+        if section != .home {
+          footer(class: "container flex justify-center gap-2 py-8 text-sm text-textfg/60") {
+            p { "© \(Calendar.current.component(.year, from: SiteMetadata.now)) Kevin Renskers" }
+            a(class: "underline hover:text-accent", href: "/legal/") { "legal notice" }
+          }
+        }
       }
     }
   ]
