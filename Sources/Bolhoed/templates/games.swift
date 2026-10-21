@@ -37,7 +37,7 @@ func renderGames(context: ItemsRenderingContext<GameMetadata>) -> Node {
 
 @NodeBuilder
 private func gameCardContents(_ game: Item<GameMetadata>) -> Node {
-  div(class: "relative aspect-[2/3] overflow-hidden rounded-xl bg-zinc-900 transition duration-300") {
+  div(class: "relative aspect-[2/3] overflow-hidden rounded-xl bg-white transition duration-300") {
     // Wide fallback art gets cropped to a 2:3 slice by object-cover. Steam puts the logo
     // on the left of those, so crop from there instead of the middle.
     img(

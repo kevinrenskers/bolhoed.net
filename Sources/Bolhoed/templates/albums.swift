@@ -37,7 +37,7 @@ func renderAlbums(context: ItemsRenderingContext<AlbumMetadata>) -> Node {
 
 @NodeBuilder
 private func albumCardContents(_ album: Item<AlbumMetadata>) -> Node {
-  div(class: "relative aspect-square overflow-hidden rounded-xl bg-zinc-900 transition duration-300") {
+  div(class: "relative aspect-square overflow-hidden rounded-xl bg-white transition duration-300") {
     img(
       alt: "\(album.metadata.artist) - \(album.title)",
       class: "absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105",

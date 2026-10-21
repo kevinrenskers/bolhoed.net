@@ -50,7 +50,7 @@ func renderMovies(context: ItemsRenderingContext<ImdbMetadata>) -> Node {
 private func showCard(_ show: Item<ImdbMetadata>) -> Node {
   li {
     a(class: "group block", href: "https://www.imdb.com/title/\(show.metadata.id)/", target: "_blank") {
-      div(class: "relative aspect-[2/3] overflow-hidden rounded-xl bg-zinc-900 transition duration-300") {
+      div(class: "relative aspect-[2/3] overflow-hidden rounded-xl bg-white transition duration-300") {
         img(
           alt: show.title,
           class: "h-full w-full object-cover transition duration-500 group-hover:scale-105",
