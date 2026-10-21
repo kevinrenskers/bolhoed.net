@@ -227,4 +227,6 @@ It didn't come as a surprise that the United States scored negative one point. I
 
 According to this list I should move back to Iceland, move to Norway, or stay in the Netherlands. Not entirely unexpected, since Norway was already on my mind before making this list, but it's nice that the data backs it up.
 
-I'm pretty sure I'll end up in Norway, Denmark, Austria, or Ireland. I loved my time in Iceland, but it's way too touristy and overcrowded now, so I don't see myself living there again. Denmark and Austria have the advantage of being within driving distance of my family and fiends in the Netherlands, while Norway has the most picturesque nature, Denmark the best bicycle story, and Ireland the best vibes.
+I'm pretty sure I'll end up in Norway, Denmark, Austria, or Ireland. I loved my time in Iceland, but it's way too touristy and overcrowded now, so I don't see myself living there again. Denmark and Austria have the advantage of being within driving distance of my family and fiends in the Netherlands, while Norway has the most picturesque nature, Denmark the best bicycle story, and Ireland the best vibes. 
+
+Switzerland would be preferable over Austria, but it has such a high cost of living that working as a remote freelancer becomes almost impossible; my Dutch clients wouldn't pay the sort of rates necessary to live in Switzerland. But let's say that I'd find a good job in a beautiful mountain village? I would move immediately. I lost my heart in Kandersteg and living there for a few years would be the dream.
