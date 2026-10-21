@@ -1,18 +1,21 @@
 {
-    "name": "Bolhoed",
-    "short_name": "Bolhoed",
-    "icons": [
-        {
-            "src": "/android-chrome-192x192.png",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "/android-chrome-512x512.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        }
-    ],
-    "theme_color": "#294858",
-    "background_color": "#3a677d"
+  "name": "Bolhoed.net",
+  "short_name": "Bolhoed",
+  "icons": [
+    {
+      "src": "/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "theme_color": "#fdfbf5",
+  "background_color": "#fdfbf5",
+  "display": "standalone"
 }
