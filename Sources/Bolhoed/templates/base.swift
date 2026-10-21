@@ -78,7 +78,7 @@ func baseHtml(title pageTitle: String, section: Section?, @NodeBuilder children:
       }
       body(class: "bg-bodybg flex min-h-screen flex-col text-zinc-100 antialiased \(section?.rawValue ?? "")") {
         nav(class: "sticky top-0 z-50 border-b border-white/20 md:backdrop-blur-md bg-[#294858] md:bg-black/30") {
-          div(class: "relative mx-auto flex max-w-6xl items-center px-6 py-4 text-sm") {
+          div(class: "relative container flex items-center py-4 text-sm") {
             input(class: "peer sr-only", id: "nav-toggle", type: "checkbox")
 
             label(
@@ -98,11 +98,7 @@ func baseHtml(title pageTitle: String, section: Section?, @NodeBuilder children:
             }
 
             div(
-              class: [
-                "hidden md:flex md:items-center md:gap-8",
-                "max-md:absolute max-md:top-full max-md:right-0 max-md:left-0 max-md:flex-col max-md:gap-4 max-md:border-b max-md:border-white/20 max-md:bg-[#294858] max-md:px-6 max-md:py-4",
-                "peer-checked:max-md:flex",
-              ].joined(separator: " ")
+              class: "hidden md:flex md:items-center gap-4 md:gap-8 max-md:absolute max-md:top-full max-md:right-0 max-md:left-0 max-md:flex-col max-md:border-b max-md:border-white/20 max-md:bg-[#294858] max-md:px-5 max-md:py-4 peer-checked:max-md:flex"
             ) {
               Section.allCases
                 .enumerated()
@@ -115,7 +111,7 @@ func baseHtml(title pageTitle: String, section: Section?, @NodeBuilder children:
           }
         }
 
-        main(class: "mx-auto flex w-full max-w-6xl flex-1 flex-col px-6 py-12") {
+        main(class: "container flex flex-1 flex-col py-12") {
           children()
         }
       }

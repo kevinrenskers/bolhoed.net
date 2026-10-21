@@ -14,7 +14,7 @@ func renderAlbums(context: ItemsRenderingContext<AlbumMetadata>) -> Node {
       }
     }
 
-    ul(class: "grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5") {
+    ul(class: "grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-5") {
       context.items.map { album in
         li {
           if let url = album.metadata.linkURL {
