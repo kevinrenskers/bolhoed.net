@@ -63,7 +63,7 @@ private func renderArticleList(_ articles: [Item<ArticleMetadata>], allItems: [A
 private func tagsWithCounts(_ articles: [Item<ArticleMetadata>]) -> [(String, Int)] {
   articles
     .flatMap(\.tags)
-    .reduce(into: [:]) { $0[$1, default: 0] += 1 }
+    .reduce(into: [String: Int]()) { $0[$1, default: 0] += 1 }
     .sorted { $0.value == $1.value ? $0.key < $1.key : $0.value > $1.value }
     .map { ($0.key, $0.value) }
 }
