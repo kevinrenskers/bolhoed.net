@@ -29,13 +29,13 @@ func renderArticles(context: ItemsRenderingContext<ArticleMetadata>) -> Node {
 
 @NodeBuilder
 private func articleSummary(_ article: Item<ArticleMetadata>) -> Node {
-  h2 {
+  h2(class: "mb-0!") {
     a(class: "text-2xl", href: article.url) { article.title }
   }
-  p(class: "text-sm text-white/80 mb-2") {
+  div(class: "text-sm text-white/80") {
     article.date.formatted("MMMM dd, yyyy")
   }
-  p { article.metadata.summary }
+  p(class: "mt-2!") { a(class: "no-underline! hover:text-white!", href: article.url) { article.metadata.summary } }
 }
 
 func renderArticle(context: ItemRenderingContext<ArticleMetadata>) -> Node {

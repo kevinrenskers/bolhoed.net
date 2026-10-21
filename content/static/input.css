@@ -9,6 +9,11 @@
 @theme {
   --color-accent: #f1a948;
   --color-bodybg: #3a677d;
+  --color-codebg: #294858;
+  --color-codefg: #f1f5f9;
+  
+  --font-main: "Main Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-title: "Title Serif", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 @layer base {
@@ -67,7 +72,7 @@
   }
 
   .prose h2 {
-    @apply mt-10 mb-1;
+    @apply font-title text-2xl lg:text-3xl mb-4;
   }
 
   .prose thead {
@@ -86,10 +91,24 @@
   .prose td {
     @apply px-3! py-2;
   }
+  
+  .prose code {
+    @apply font-normal text-base text-codefg bg-codebg p-1;
+  }
+  
+  .prose pre {
+    @apply py-4 rounded-md text-codefg bg-codebg;
+    overflow: auto;
+    overflow-y: hidden;
+  }
+  
+  .prose pre code {
+    @apply text-sm lg:text-base;
+  }
 }
 
 @utility heading-1 {
-  @apply text-4xl/[1.1111111] font-extrabold text-white;
+  @apply font-title font-bold text-4xl lg:text-5xl text-white;
 }
 
 @utility links {

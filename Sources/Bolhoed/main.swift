@@ -145,7 +145,7 @@ try await Saga(input: "content", output: ".deploy")
     folder: "blog",
     metadata: ArticleMetadata.self,
     readers: [.parsleyMarkdownWithAttributesReader],
-    itemProcessor: sequence(publicationDateInFilename, swiftSoupProcessor(processExternalLinks)),
+    itemProcessor: sequence(publicationDateInFilename, swiftSoupProcessor(generateTOC, processExternalLinks, convertAsides)),
     writers: [
       .itemWriter(swim(renderArticle)),
       .listWriter(swim(renderArticles)),
@@ -198,9 +198,6 @@ try await Saga(input: "content", output: ".deploy")
     writers: [.listWriter(swim(renderAlbums), output: "albums/index.html")]
   )
 
-  // 404
-  .createPage("404.html", using: swim(render404))
-
   // Home
   .register(
     metadata: EmptyMetadata.self,
@@ -210,11 +207,25 @@ try await Saga(input: "content", output: ".deploy")
     writers: [.itemWriter(swim(renderHome))]
   )
 
+  // Sitemap
+  .createPage("sitemap.xml", using: Saga.sitemap(baseURL: SiteMetadata.url, filter: { path, item in
+    if path.string.hasSuffix("feed.xml") {
+      return false
+    }
+    return true
+  }))
+
+  // 404
+  .createPage("404.html", using: swim(render404))
+
   // Minify all HTML output (prod only)
   .postProcess { html, _ in
     guard !Saga.isDev else { return html }
     return Bonsai.minifyHTML(html)
   }
+
+  // Markdown twins of articles, for content negotiation (see nginx.conf)
+  .afterWrite(writeMarkdownFiles)
 
   // Run everything!
   .run()

@@ -37,12 +37,30 @@ enum Section: String, CaseIterable, Codable {
 func baseHtml(title pageTitle: String, section: Section?, @NodeBuilder children: () -> NodeConvertible) -> Node {
   return [
     .documentType("html"),
-    html(lang: "en-US") {
+    html(class: "font-main lg:text-lg", lang: "en-US") {
       head {
         meta(charset: "utf-8")
         meta(content: "width=device-width, initial-scale=1", name: "viewport")
         title { pageTitle }
         link(href: Saga.hashed("/static/output.css"), rel: "stylesheet")
+        style {
+          Node.raw("""
+          @font-face {
+            font-family: "Title Serif";
+            src: url(/static/fonts/title.woff2) format("woff2");
+            font-style: normal;
+            font-weight: 100 900;
+            font-display: swap;
+          }
+          @font-face {
+            font-family: "Main Sans";
+            src: url(/static/fonts/main.woff2) format("woff2");
+            font-style: normal;
+            font-weight: 400 700;
+            font-display: swap;
+          }
+          """)
+        }
         link(href: "/blog/feed.xml", rel: "alternate", title: SiteMetadata.name, type: "application/atom+xml")
         link(href: "/apple-touch-icon.png", rel: "apple-touch-icon", sizes: "180x180")
         link(href: "/favicon-32x32.png", rel: "icon", sizes: "32x32", type: "image/png")
