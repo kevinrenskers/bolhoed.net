@@ -217,7 +217,7 @@ The score is made up of several categories:
 * Happiness. A score based on the World Happiness Report.
 * Disasters. Penalties for exposure to floods, earthquakes, tsunamis and hurricanes.
 * Fireworks. Bonus points for countries where the general population can't buy and use fireworks. It's just horrible for people with pets, and for the environment.
-* Politics. The most subjective one, with bonuses based on things like women's rights and gender equality, LGBTQ+ rights, freedom of press, a welfare state, ICC membership. And penalties for things like institutional racism, siding with Russia, lack of action against Israel, authoritarian rule, lack of gun control, police brutality, right-wing government, anti-European, anti-vaccine and anti-climate change.
+* Politics. The most subjective one, with bonuses based on things like women's rights and gender equality, LGBTQ+ rights, freedom of press, a welfare state, sanctions against Israel, and ICC membership. And penalties for things like institutional racism, siding with Russia, authoritarian rule, lack of gun control, police brutality, right-wing government, anti-vaccine, and climate change denial.
 * Nature. Bonus points for exceptional nature.
 * Transport. Bonus points for good and affordable public transportation, good bicycle infrastructure, good roads, walkable cities.
 
