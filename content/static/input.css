@@ -8,11 +8,30 @@
 
 @theme {
   --color-accent: #f1a948;
+  --color-bodybg: #3a677d;
 }
 
 @layer base {
   body.home {
     @apply md:bg-[url(/static/ape.svg)] bg-contain bg-left-bottom bg-fixed bg-no-repeat;
+  }
+  
+  table.countries {
+    @apply block max-h-[415px] overflow-y-auto;
+  }
+
+  table.countries thead,
+  table.countries tbody {
+    @apply table w-full table-fixed;
+  }
+
+  table.countries thead {
+    @apply sticky top-0;
+  }
+
+  table.countries th:first-child,
+  table.countries td:first-child {
+    @apply w-5/6;
   }
 }
 
@@ -50,6 +69,23 @@
   .prose h2 {
     @apply mt-10 mb-1;
   }
+
+  .prose thead {
+    @apply border-0 bg-white;
+  }
+
+  .prose thead th {
+    @apply text-bodybg;
+  }
+
+  .prose tbody tr {
+    @apply border-0 even:bg-white/5;
+  }
+
+  .prose th,
+  .prose td {
+    @apply px-3! py-2;
+  }
 }
 
 @utility heading-1 {
@@ -63,7 +99,7 @@
 }
 
 @utility page-header {
-  @apply mb-12 border-b border-white/10 pb-8;
+  @apply mb-8 border-b border-white/10 pb-8;
 
   & h1 {
     @apply heading-1;

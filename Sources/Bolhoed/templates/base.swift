@@ -58,7 +58,7 @@ func baseHtml(title pageTitle: String, section: Section?, @NodeBuilder children:
           script(defer: true, src: "/script.js", customAttributes: ["data-website-id": "dacace94-20ac-45f3-96f9-2d35b19d665e"])
         }
       }
-      body(class: "bg-[#3a677d] flex min-h-screen flex-col text-zinc-100 antialiased \(section?.rawValue ?? "")") {
+      body(class: "bg-bodybg flex min-h-screen flex-col text-zinc-100 antialiased \(section?.rawValue ?? "")") {
         nav(class: "sticky top-0 z-50 border-b border-white/20 md:backdrop-blur-md bg-[#294858] md:bg-black/30") {
           div(class: "relative mx-auto flex max-w-6xl items-center px-6 py-4 text-sm") {
             input(class: "peer sr-only", id: "nav-toggle", type: "checkbox")

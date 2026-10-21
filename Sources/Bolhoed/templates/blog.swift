@@ -21,18 +21,21 @@ func renderArticles(context: ItemsRenderingContext<ArticleMetadata>) -> Node {
       }
     }
     
-    context.items.map { article in
-      div(class: "links") {
-        p {
-          a(class: "text-2xl", href: article.url) { article.title }
-        }
-        p(class: "text-sm text-white/80 mb-2") {
-          article.date.formatted("MMMM dd, yyyy")
-        }
-        p { article.metadata.summary }
-      }
+    div(class: "prose") {
+      context.items.map(articleSummary)
     }
   }
+}
+
+@NodeBuilder
+private func articleSummary(_ article: Item<ArticleMetadata>) -> Node {
+  h2 {
+    a(class: "text-2xl", href: article.url) { article.title }
+  }
+  p(class: "text-sm text-white/80 mb-2") {
+    article.date.formatted("MMMM dd, yyyy")
+  }
+  p { article.metadata.summary }
 }
 
 func renderArticle(context: ItemRenderingContext<ArticleMetadata>) -> Node {

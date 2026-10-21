@@ -144,7 +144,7 @@ try await Saga(input: "content", output: ".deploy")
   .register(
     folder: "blog",
     metadata: ArticleMetadata.self,
-    readers: [.parsleyMarkdownReader],
+    readers: [.parsleyMarkdownWithAttributesReader],
     itemProcessor: sequence(publicationDateInFilename, swiftSoupProcessor(processExternalLinks)),
     writers: [
       .itemWriter(swim(renderArticle)),
