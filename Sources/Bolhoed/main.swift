@@ -8,6 +8,7 @@ import SagaPathKit
 import SwiftCSV
 import SwiftDotenv
 import SagaUtils
+import SagaImageReader
 
 try? Dotenv.configure()
 
@@ -81,9 +82,10 @@ struct GameMetadata: Metadata {
 struct ArticleMetadata: Metadata {
   let summary: String
   var tags: [String]?
-  /// Built from the article's headings during processing, rendered in the sidebar
   var toc: String?
 }
+
+struct PhotoAlbumMetadata: Metadata {}
 
 extension Item where M == ArticleMetadata {
   var tags: [String] {
@@ -168,6 +170,31 @@ try await Saga(input: "content", output: ".deploy")
         output: "feed.xml"
       ),
     ]
+  )
+
+  // Photo albums from markdown files, with nested photo pages per album
+  .register(
+    folder: "photos",
+    metadata: PhotoAlbumMetadata.self,
+    writers: [
+      .listWriter(swim(renderPhotoAlbums)),
+      .itemWriter(swim(renderPhotoAlbum)),
+    ],
+    nested: { nested in
+      nested.register(
+        metadata: ImageMetadata.self,
+        readers: [.imageReader],
+        itemProcessor: { photo in
+          // Use exif data as the item's date
+          if let takenAt = photo.takenAt {
+            photo.date = takenAt
+          }
+        },
+        writers: [
+          .itemWriter(swim(renderPhoto)),
+        ]
+      )
+    }
   )
 
   // Load tv shows

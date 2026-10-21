@@ -42,7 +42,6 @@ private func renderArticleList(_ articles: [Item<ArticleMetadata>], allItems: [A
           h1 {
             "Blog"
           }
-          // Below lg the sidebar is hidden, so the tags go under the header instead
           div(class: "mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm lg:hidden") {
             tagLink("All (\(allArticles.count))", href: "/blog/", isCurrent: currentTag == nil)
             tags.map { tag, count in
@@ -59,7 +58,6 @@ private func renderArticleList(_ articles: [Item<ArticleMetadata>], allItems: [A
   }
 }
 
-/// All tags used by the articles, most used first, then alphabetically
 private func tagsWithCounts(_ articles: [Item<ArticleMetadata>]) -> [(String, Int)] {
   articles
     .flatMap(\.tags)
@@ -68,7 +66,6 @@ private func tagsWithCounts(_ articles: [Item<ArticleMetadata>]) -> [(String, In
     .map { ($0.key, $0.value) }
 }
 
-/// What goes before each tag in "in a, b, and c" (or "in a and b"); adapted from loopwerk.io's tagPrefix
 private func tagSeparator(index: Int, totalTags: Int) -> Node {
   if index == 0 {
     return ""
@@ -100,7 +97,6 @@ func renderArticle(context: ItemRenderingContext<ArticleMetadata>) -> Node {
   let tags = context.item.tags
 
   return baseHtml(title: "Bolhoed.net | \(context.item.title)", section: .blog) {
-    // Below lg a single left-aligned column; from lg a sidebar with the contents, date and tags next to the article
     div(class: "article-grid") {
       aside(class: "max-lg:hidden") {
         div(class: "sticky top-24 flex max-h-[calc(100vh-7rem)] flex-col gap-8 overflow-y-auto text-sm") {
@@ -144,7 +140,6 @@ func renderArticle(context: ItemRenderingContext<ArticleMetadata>) -> Node {
           }
           if let toc {
             details(class: "article-toc group mt-4 lg:hidden") {
-              // Replace the default disclosure triangle with a chevron that points down when open
               summary(class: "flex cursor-pointer list-none items-center gap-1.5 text-textfg/80 [&::-webkit-details-marker]:hidden") {
                 Node.raw(#"<svg class="h-3.5 w-3.5 group-open:rotate-90" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>"#)
                 "Contents"

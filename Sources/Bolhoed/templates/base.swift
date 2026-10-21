@@ -6,6 +6,7 @@ import SagaSwimRenderer
 enum Section: String, CaseIterable, Codable {
   case home
   case blog
+  case photos
   case games
   case shows
   case movies
@@ -15,6 +16,7 @@ enum Section: String, CaseIterable, Codable {
     switch self {
       case .home: "Home"
       case .blog: "Blog"
+      case .photos: "Photos"
       case .games: "Games"
       case .shows: "TV shows"
       case .movies: "Movies"
@@ -26,6 +28,7 @@ enum Section: String, CaseIterable, Codable {
     switch self {
       case .home: "/"
       case .blog: "/blog/"
+      case .photos: "/photos/"
       case .games: "/games/"
       case .shows: "/shows/"
       case .movies: "/movies/"

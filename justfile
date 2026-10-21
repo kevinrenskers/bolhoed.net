@@ -13,6 +13,20 @@ run:
 
 	wait
 
+# Generate photo thumbnails (shortest side 660px) for the album pages, skipping ones that already exist
+thumbnails:
+	#!/usr/bin/env bash
+	shopt -s nullglob
+	mkdir -p content/static/thumbnails
+	for img in content/photos/*/*.{webp,jpg,jpeg,png}; do
+		name=$(basename "$img")
+		thumb="content/static/thumbnails/${name%.*}.webp"
+		if [[ ! -f "$thumb" ]]; then
+			echo "Generating: $thumb"
+			magick "$img" -resize "660x660^" -strip -quality 85 -define webp:method=6 "$thumb"
+		fi
+	done
+
 # Delete game posters whose id is no longer listed in games.csv
 clean-posters:
 	#!/usr/bin/env fish

@@ -131,7 +131,6 @@
   }
 }
 
-/* Blog layout: one left-aligned column below lg, from lg a sidebar on the container's left edge and the text column on its right */
 @utility article-grid {
   @apply w-full max-w-2xl lg:grid lg:max-w-none lg:grid-cols-[13rem_minmax(0,42rem)] lg:justify-between lg:gap-24;
 }
