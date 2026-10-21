@@ -156,7 +156,7 @@
 
 @utility links {
   & a {
-    @apply text-textfg underline underline-offset-2 hover:text-accent font-normal;
+    @apply text-inherit underline underline-offset-2 hover:text-accent font-normal;
   }
 }
 
