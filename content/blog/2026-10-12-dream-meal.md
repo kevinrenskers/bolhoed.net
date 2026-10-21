@@ -1,4 +1,5 @@
 ---
+tags: food, favs
 summary: You know Off Menu, the podcast where a guest chooses their dream meal in the dream restaurant? Here's my menu.
 ---
 

@@ -14,7 +14,7 @@ func renderGames(context: ItemsRenderingContext<GameMetadata>) -> Node {
       }
     }
 
-    ul(class: "grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-5") {
+    ul(class: "grid grid-cols-2 gap-8 lg:gap-12 md:grid-cols-3 lg:grid-cols-4") {
       context.items.map { game in
         li {
           if let url = game.metadata.linkURL {
@@ -52,7 +52,7 @@ private func gameCardContents(_ game: Item<GameMetadata>) -> Node {
     }
   }
 
-  h2(class: "mt-3 text-sm font-semibold leading-snug text-zinc-100 transition group-hover:text-white") {
+  h2(class: "mt-3 text-sm font-semibold leading-snug transition") {
     game.title
   }
 }

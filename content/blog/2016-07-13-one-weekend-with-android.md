@@ -1,5 +1,5 @@
 ---
-tags: review, apple
+tags: review
 summary: I shocked myself and bought a Nexus 5x, to give Android a fair shot as my main phone. It went back after 72 hours.
 ---
 

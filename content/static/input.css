@@ -8,9 +8,10 @@
 
 @theme {
   --color-accent: #f1a948;
-  --color-bodybg: #3a677d;
-  --color-codebg: #294858;
-  --color-codefg: #f1f5f9;
+  --color-bodybg: #fdfbf5;
+  --color-codebg: #fae6ca;
+  --color-codefg: #2b2b2b;
+  --color-textfg: #2b2b2b;
   
   --font-main: "Main Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-title: "Title Serif", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
@@ -22,8 +23,8 @@
 
 @layer base {
   body.home {
-    --ape-offset: clamp(-24vh, 50vw + min(100vw, 1280px) / 2 - 27.25rem - 65.75vh, 0px);
-    @apply md:bg-[url(/static/ape.svg)] bg-contain bg-position-[left_var(--ape-offset)_bottom] bg-fixed bg-no-repeat;
+    --ape-offset: clamp(-18vh, 50vw + min(100vw, 64rem) / 2 - 27.5rem - 49.3vh, 0px);
+    @apply md:bg-[url(/static/ape.svg)] bg-size-[auto_75vh] bg-position-[left_var(--ape-offset)_bottom] bg-fixed bg-no-repeat;
   }
   
   table.countries {
@@ -47,14 +48,14 @@
 
 @layer utilities {
   .prose {
-    --tw-prose-body: var(--color-white);
-    --tw-prose-headings: var(--color-white);
-    --tw-prose-hr: var(--color-white);
-    --tw-prose-bullets: var(--color-white);
-    --tw-prose-counters: var(--color-white);
-    --tw-prose-quotes: var(--color-white);
-    --tw-prose-quote-borders: var(--color-white);
-    @apply max-w-2xl links;
+    --tw-prose-body: var(--color-textfg);
+    --tw-prose-headings: var(--color-textfg);
+    --tw-prose-hr: var(--color-textfg);
+    --tw-prose-bullets: var(--color-textfg);
+    --tw-prose-counters: var(--color-textfg);
+    --tw-prose-quotes: var(--color-textfg);
+    --tw-prose-quote-borders: var(--color-textfg);
+    @apply max-w-2xl links prose-code:before:hidden prose-code:after:hidden;
   }
   
   .prose blockquote {
@@ -81,7 +82,7 @@
   }
 
   .prose thead {
-    @apply border-0 bg-white;
+    @apply border-0 bg-textfg;
   }
 
   .prose thead th {
@@ -89,7 +90,7 @@
   }
 
   .prose tbody tr {
-    @apply border-0 even:bg-white/5;
+    @apply border-0 even:bg-textfg/5;
   }
 
   .prose th,
@@ -113,16 +114,50 @@
 }
 
 @utility container {
-  @apply mx-auto w-full max-w-[1280px] px-5;
+  @apply mx-auto w-full max-w-[64rem] px-6;
+}
+
+/* The nav sticks at -top-12, so its first 48px of padding scroll away; the border fades in over that same distance.
+   Browsers without scroll timelines just show the border all the time. */
+@utility sticky-nav-border {
+  animation: sticky-nav-border linear both;
+  animation-timeline: scroll();
+  animation-range: 0 48px;
+}
+
+@keyframes sticky-nav-border {
+  to {
+    border-color: var(--color-black);
+  }
+}
+
+/* Blog layout: one left-aligned column below lg, from lg a sidebar on the container's left edge and the text column on its right */
+@utility article-grid {
+  @apply w-full max-w-2xl lg:grid lg:max-w-none lg:grid-cols-[13rem_minmax(0,42rem)] lg:justify-between lg:gap-24;
+}
+
+/* The nested <ul class="toc"> that SagaUtils' buildTOCList generates */
+@utility article-toc {
+  & ul {
+    @apply flex flex-col gap-2;
+  }
+
+  & ul ul {
+    @apply mt-2 pl-4;
+  }
+
+  & a {
+    @apply leading-snug text-textfg/80 hover:text-accent;
+  }
 }
 
 @utility heading-1 {
-  @apply font-title font-bold text-4xl md:text-5xl text-white;
+  @apply font-title font-bold text-4xl md:text-5xl text-textfg;
 }
 
 @utility links {
   & a {
-    @apply text-white underline underline-offset-2 hover:text-accent font-normal;
+    @apply text-textfg underline underline-offset-2 hover:text-accent font-normal;
   }
 }
 
@@ -134,6 +169,6 @@
   }
 
   & p {
-    @apply mt-4 text-white/80;
+    @apply mt-4 text-textfg/80;
   }
 }

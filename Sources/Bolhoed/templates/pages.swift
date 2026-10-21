@@ -3,24 +3,22 @@ import HTML
 
 func render404(context: PageRenderingContext) -> Node {
   baseHtml(title: "Bolhoed.net | 404", section: nil) {
-    article(class: "prose") {
+    article(class: "prose mx-auto w-full") {
       h1 { "404" }
-      div(class: "max-w-2xl") {
-        p { "Sorry, but the page you've requested doesn't exist." }
-      }
+      p { "Sorry, but the page you've requested doesn't exist." }
     }
   }
 }
 
 func renderHome(context: ItemRenderingContext<EmptyMetadata>) -> Node {
   baseHtml(title: "Bolhoed.net", section: .home) {
-    div(class: "md:mt-auto md:ml-auto md:max-w-xl md:rounded-2xl md:border-4 md:border-white/20 md:bg-black/30 md:p-10 md:shadow-2xl md:backdrop-blur-md") {
+    div(class: "md:mt-auto md:ml-auto md:max-w-xl md:rounded-2xl md:bg-bodybg/30 md:p-10 md:backdrop-blur-lg") {
       article(class: "prose") {
         h1 { Node.raw(context.item.title) }
         Node.raw(context.item.body)
       }
     
-      div(class: "mt-8 flex gap-4 [&_a]:block [&_a]:h-6 [&_a]:w-6 [&_a]:text-white [&_a]:transition [&_a:hover]:text-accent md:[&_a]:h-7 md:[&_a]:w-7") {
+      div(class: "mt-8 flex gap-4 [&_a]:block [&_a]:h-6 [&_a]:w-6 [&_a]:text-textfg [&_a]:transition [&_a:hover]:text-accent md:[&_a]:h-7 md:[&_a]:w-7") {
         a(href: "mailto:kevin@bolhoed.net", title: "Email") {
           Node.raw(#"<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 512 512"><path d="M256 48C141.1 48 48 141.1 48 256s93.1 208 208 208h32v48H256C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256v96 24H488 440c-36.9 0-69.6-17.8-90-45.4c-22 27.6-55.9 45.4-94 45.4c-66.3 0-120-53.7-120-120s53.7-120 120-120c27 0 51.9 8.9 72 24v-8h48v24 80 8c0 35.3 28.7 64 64 64h24V256c0-114.9-93.1-208-208-208zm72 208a72 72 0 1 0 -144 0 72 72 0 1 0 144 0z"/></svg>"#)
         }

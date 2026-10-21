@@ -14,7 +14,7 @@ func renderAlbums(context: ItemsRenderingContext<AlbumMetadata>) -> Node {
       }
     }
 
-    ul(class: "grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-5") {
+    ul(class: "grid grid-cols-2 gap-8 lg:gap-12 md:grid-cols-3 lg:grid-cols-4") {
       context.items.map { album in
         li {
           if let url = album.metadata.linkURL {
@@ -50,7 +50,7 @@ private func albumCardContents(_ album: Item<AlbumMetadata>) -> Node {
     }
   }
 
-  h2(class: "mt-3 text-sm font-semibold leading-snug text-zinc-100 transition group-hover:text-white") {
+  h2(class: "mt-3 text-sm font-semibold leading-snug transition") {
     album.title
   }
 

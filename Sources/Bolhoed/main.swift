@@ -80,9 +80,16 @@ struct GameMetadata: Metadata {
 
 struct ArticleMetadata: Metadata {
   let summary: String
+  var tags: [String]?
+  /// Built from the article's headings during processing, rendered in the sidebar
+  var toc: String?
 }
 
 extension Item where M == ArticleMetadata {
+  var tags: [String] {
+    metadata.tags ?? []
+  }
+
   var year: Int {
     return Calendar.current.component(.year, from: date)
   }
@@ -145,10 +152,11 @@ try await Saga(input: "content", output: ".deploy")
     folder: "blog",
     metadata: ArticleMetadata.self,
     readers: [.parsleyMarkdownWithAttributesReader],
-    itemProcessor: sequence(publicationDateInFilename, swiftSoupProcessor(generateTOC, processExternalLinks, convertAsides)),
+    itemProcessor: sequence(publicationDateInFilename, swiftSoupProcessor({ doc, item in item.metadata.toc = try buildTOCList(doc) }, processExternalLinks, convertAsides)),
     writers: [
       .itemWriter(swim(renderArticle)),
       .listWriter(swim(renderArticles)),
+      .tagWriter(swim(renderTag), tags: \.tags),
       .listWriter(
         Saga.atomFeed(
           title: SiteMetadata.name,
@@ -202,6 +210,7 @@ try await Saga(input: "content", output: ".deploy")
   .register(
     metadata: EmptyMetadata.self,
     readers: [.parsleyMarkdownReader],
+    itemProcessor: swiftSoupProcessor(processExternalLinks),
     filter: { $0.relativeSource == "index.md" },
     claimExcludedItems: false,
     writers: [.itemWriter(swim(renderHome))]

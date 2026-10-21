@@ -1,4 +1,5 @@
 ---
+tags: review
 summary: I decided to find the best country in the world to immigrate to.
 ---
 
