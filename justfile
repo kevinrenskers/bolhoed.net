@@ -42,3 +42,20 @@ clean-posters:
 	end
 
 	echo "Removed $removed poster(s), $(count $ids) games in games.csv"
+
+# Delete photo thumbnails whose source photo no longer exists
+clean-thumbnails:
+	#!/usr/bin/env fish
+	set -l photos content/photos/*/*.{webp,jpg,jpeg,png}
+	set photos (path basename -E $photos)
+	set -l removed 0
+
+	for thumb in content/static/thumbnails/*.webp
+		if not contains -- (path basename -E $thumb) $photos
+			echo "Removing $thumb"
+			rm $thumb
+			set removed (math $removed + 1)
+		end
+	end
+
+	echo "Removed $removed thumbnail(s), $(count $photos) photos"
