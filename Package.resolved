@@ -1,5 +1,5 @@
 {
-  "originHash" : "6a2c8f20c91c1e8b7f0158a0a6fd79683a0e96420504716a0723ec37644fe9d2",
+  "originHash" : "09660faca42371be594d61d876387396966324c466bcc0026c0314edc8e49975",
   "pins" : [
     {
       "identity" : "bonsai",
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/loopwerk/SagaImageReader",
       "state" : {
-        "revision" : "601e721d510b7a70a5c248f09208d4a8bc6d47ed",
-        "version" : "1.3.0"
+        "revision" : "208e45c82d3b3e3553d5d1f6cf699941cac19a37",
+        "version" : "1.4.0"
       }
     },
     {
@@ -78,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/loopwerk/Scry.git",
       "state" : {
-        "revision" : "affe06f9387d017703f90996b610d915feb31cbb",
-        "version" : "1.2.0"
+        "revision" : "cd332fd2c49b54d682d0878f7180746a3cba64b5",
+        "version" : "1.3.0"
       }
     },
     {

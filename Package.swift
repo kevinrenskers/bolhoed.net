@@ -12,7 +12,7 @@ let package = Package(
     .package(url: "https://github.com/loopwerk/SagaParsleyMarkdownReader", from: "1.0.0"),
     .package(url: "https://github.com/loopwerk/SagaSwimRenderer", from: "1.0.0"),
     .package(url: "https://github.com/loopwerk/SagaUtils", from: "1.0.2"),
-    .package(url: "https://github.com/loopwerk/SagaImageReader", from: "1.3.0"),
+    .package(url: "https://github.com/loopwerk/SagaImageReader", from: "1.4.0"),
     .package(url: "https://github.com/loopwerk/Bonsai", from: "1.1.0"),
     .package(url: "https://github.com/loopwerk/SwiftTailwind", from: "1.0.0"),
     .package(url: "https://github.com/swiftcsv/SwiftCSV", from: "0.8.0"),

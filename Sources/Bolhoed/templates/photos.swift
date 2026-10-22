@@ -8,14 +8,6 @@ extension Item where M == ImageMetadata {
     let path = "static/thumbnails/\(relativeSource.lastComponentWithoutExtension).webp"
     return FileManager.default.fileExists(atPath: "content/\(path)") ? "/\(path)" : "/\(relativeSource)"
   }
-
-  var width: String? {
-    (metadata.pixelXDimension ?? metadata.imageWidth).map(String.init)
-  }
-
-  var height: String? {
-    (metadata.pixelYDimension ?? metadata.imageLength).map(String.init)
-  }
 }
 
 private func photoCount(_ count: Int) -> String {
@@ -25,7 +17,7 @@ private func photoCount(_ count: Int) -> String {
 // MARK: - Albums
 
 func renderPhotoAlbums(context: ItemsRenderingContext<PhotoAlbumMetadata>) -> Node {
-  baseHtml(title: "Bolhoed.net | Photos", section: .photos) {
+  baseHtml(title: "Bolhoed.net | Photos", canonicalPath: context.outputPath.url, section: .photos) {
     header(class: "page-header") {
       h1 { "Photos" }
       p { "\(context.items.count) \(context.items.count == 1 ? "album" : "albums")" }
@@ -72,7 +64,7 @@ func renderPhotoAlbum(context: ItemRenderingContext<PhotoAlbumMetadata>) -> Node
   let album = context.item
   let photos = album.children(as: ImageMetadata.self)
 
-  return baseHtml(title: "Bolhoed.net | Photos | \(album.title)", section: .photos) {
+  return baseHtml(title: "Bolhoed.net | Photos | \(album.title)", canonicalPath: context.item.url, section: .photos) {
     header(class: "page-header") {
       h1 { album.title }
       p { photoCount(photos.count) }
@@ -85,10 +77,10 @@ func renderPhotoAlbum(context: ItemRenderingContext<PhotoAlbumMetadata>) -> Node
             alt: "Photo from \(album.title)",
             class: "h-full w-full object-cover transition duration-500 group-hover:scale-105",
             decoding: "async",
-            height: photo.height,
+            height: "\(photo.metadata.imageHeight)",
             loading: "lazy",
             src: photo.thumbnailURL,
-            width: photo.width
+            width: "\(photo.metadata.imageWidth)"
           )
         }
       }
@@ -101,17 +93,23 @@ func renderPhotoAlbum(context: ItemRenderingContext<PhotoAlbumMetadata>) -> Node
 func renderPhoto(context: ItemRenderingContext<ImageMetadata>) -> Node {
   let photo = context.item
   let album = photo.parent(as: PhotoAlbumMetadata.self)
+  let date = photo.date.formatted("MMMM d, yyyy")
 
-  return baseHtml(title: "Bolhoed.net | Photos | \(album.title)", section: .photos) {
+  return baseHtml(
+    title: "Bolhoed.net | Photos | \(album.title) | \(date)",
+    canonicalPath: context.item.url,
+    section: .photos,
+    ogImage: ("/\(photo.relativeSource)", photo.metadata.imageWidth, photo.metadata.imageHeight)
+  ) {
     div(class: "lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-12") {
       div {
         img(
-          alt: "Photo from \(album.title)",
+          alt: "Photo from \(album.title), taken on \(date)",
           class: "mx-auto h-auto max-h-[calc(100vh-16rem)] w-auto max-w-full border-white border-[16px] md:border-[24px]",
           decoding: "async",
-          height: photo.height,
+          height: "\(photo.metadata.imageHeight)",
           src: "/\(photo.relativeSource)",
-          width: photo.width
+          width: "\(photo.metadata.imageWidth)"
         )
 
         nav(class: "mt-6 flex justify-between text-sm", customAttributes: ["aria-label": "Photos"]) {

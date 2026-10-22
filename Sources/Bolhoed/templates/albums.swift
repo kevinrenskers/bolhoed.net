@@ -4,7 +4,7 @@ import Saga
 import SagaSwimRenderer
 
 func renderAlbums(context: ItemsRenderingContext<AlbumMetadata>) -> Node {
-  baseHtml(title: "Bolhoed.net | My favorite albums", section: .albums) {
+  baseHtml(title: "Bolhoed.net | My favorite albums", canonicalPath: context.outputPath.url, section: .albums) {
     header(class: "page-header") {
       h1 {
         "My favorite albums"

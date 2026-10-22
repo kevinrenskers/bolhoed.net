@@ -37,7 +37,9 @@ enum Section: String, CaseIterable, Codable {
   }
 }
 
-func baseHtml(title pageTitle: String, section: Section?, @NodeBuilder children: () -> NodeConvertible) -> Node {
+func baseHtml(title pageTitle: String, canonicalPath: String, section: Section?, ogImage: (path: String, width: Int, height: Int) = ("/static/opengraph.png", 1200, 630), extraHeader: Node = [], @NodeBuilder children: () -> NodeConvertible) -> Node {
+  let canonicalURL = SiteMetadata.url.appendingPathComponent(canonicalPath).absoluteString
+
   return [
     .documentType("html"),
     html(class: "font-main lg:text-lg", lang: "en-US") {
@@ -45,6 +47,7 @@ func baseHtml(title pageTitle: String, section: Section?, @NodeBuilder children:
         meta(charset: "utf-8")
         meta(content: "width=device-width, initial-scale=1", name: "viewport")
         title { pageTitle }
+        link(href: canonicalURL, rel: "canonical")
         link(href: Saga.hashed("/static/output.css"), rel: "stylesheet")
         style {
           Node.raw("""
@@ -74,9 +77,13 @@ func baseHtml(title pageTitle: String, section: Section?, @NodeBuilder children:
         meta(content: "Bolhoed.net", name: "apple-mobile-web-app-title")
         link(href: "/site.webmanifest", rel: "manifest")
 
-        meta(content: "https://www.bolhoed.net/static/opengraph.png", customAttributes: ["property": "og:image"])
-        meta(content: "1200", customAttributes: ["property": "og:image:width"])
-        meta(content: "630", customAttributes: ["property": "og:image:height"])
+        meta(content: SiteMetadata.url.appendingPathComponent(ogImage.path).absoluteString, customAttributes: ["property": "og:image"])
+        meta(content: "\(ogImage.width)", customAttributes: ["property": "og:image:width"])
+        meta(content: "\(ogImage.height)", customAttributes: ["property": "og:image:height"])
+        meta(content: canonicalURL, customAttributes: ["property": "og:url"])
+        meta(content: "summary_large_image", name: "twitter:card")
+        
+        extraHeader
 
         if !Saga.isDev {
           script(defer: true, src: "/script.js", customAttributes: ["data-website-id": "dacace94-20ac-45f3-96f9-2d35b19d665e"])

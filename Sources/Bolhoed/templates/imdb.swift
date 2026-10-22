@@ -4,7 +4,7 @@ import Saga
 import SagaSwimRenderer
 
 func renderShows(context: ItemsRenderingContext<ImdbMetadata>) -> Node {
-  baseHtml(title: "Bolhoed.net | My favorite TV Shows", section: .shows) {
+  baseHtml(title: "Bolhoed.net | My favorite TV Shows", canonicalPath: context.outputPath.url, section: .shows) {
     header(class: "page-header") {
       h1 {
         "My favorite TV Shows"
@@ -26,7 +26,7 @@ func renderShows(context: ItemsRenderingContext<ImdbMetadata>) -> Node {
 }
 
 func renderMovies(context: ItemsRenderingContext<ImdbMetadata>) -> Node {
-  baseHtml(title: "Bolhoed.net | My favorite movies", section: .movies) {
+  baseHtml(title: "Bolhoed.net | My favorite movies", canonicalPath: context.outputPath.url, section: .movies) {
     header(class: "page-header") {
       h1 {
         "My favorite movies"

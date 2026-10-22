@@ -11,18 +11,18 @@ extension Date {
 }
 
 func renderArticles(context: ItemsRenderingContext<ArticleMetadata>) -> Node {
-  renderArticleList(context.items, allItems: context.allItems, currentTag: nil)
+  renderArticleList(context.items, allItems: context.allItems, currentTag: nil, canonicalPath: context.outputPath.url)
 }
 
 func renderTag(context: PartitionedRenderingContext<String, ArticleMetadata>) -> Node {
-  renderArticleList(context.items, allItems: context.allItems, currentTag: context.key)
+  renderArticleList(context.items, allItems: context.allItems, currentTag: context.key, canonicalPath: context.outputPath.url)
 }
 
-private func renderArticleList(_ articles: [Item<ArticleMetadata>], allItems: [AnyItem], currentTag: String?) -> Node {
+private func renderArticleList(_ articles: [Item<ArticleMetadata>], allItems: [AnyItem], currentTag: String?, canonicalPath: String) -> Node {
   let allArticles = allItems.compactMap { $0 as? Item<ArticleMetadata> }
   let tags = tagsWithCounts(allArticles)
 
-  return baseHtml(title: currentTag.map { "Bolhoed.net | Blog | \($0)" } ?? "Bolhoed.net | Blog", section: .blog) {
+  return baseHtml(title: currentTag.map { "Bolhoed.net | Blog | \($0)" } ?? "Bolhoed.net | Blog", canonicalPath: canonicalPath, section: .blog) {
     // Same grid as the article page, with the list in the text column so nothing shifts when you open an article
     div(class: "article-grid") {
       aside(class: "max-lg:hidden") {
@@ -96,7 +96,13 @@ func renderArticle(context: ItemRenderingContext<ArticleMetadata>) -> Node {
   let toc = context.item.metadata.toc
   let tags = context.item.tags
 
-  return baseHtml(title: "Bolhoed.net | \(context.item.title)", section: .blog) {
+  return baseHtml(title: "Bolhoed.net | \(context.item.title)", canonicalPath: context.item.url, section: .blog, extraHeader: [
+    meta(content: context.item.metadata.summary, name: "description"),
+    meta(content: "article", customAttributes: ["property": "og:type"]),
+    link(href: SiteMetadata.url.appendingPathComponent(context.item.url).appendingPathComponent("index.md").absoluteString, rel: "alternate", type: "text/markdown"),
+    meta(content: context.item.title, customAttributes: ["property": "og:title"]),
+    meta(content: context.item.metadata.summary, customAttributes: ["property": "og:description"]),
+  ]) {
     div(class: "article-grid") {
       aside(class: "max-lg:hidden") {
         div(class: "sticky top-24 flex max-h-[calc(100vh-7rem)] flex-col gap-8 overflow-y-auto text-sm") {

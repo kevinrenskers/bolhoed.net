@@ -2,7 +2,7 @@ import Saga
 import HTML
 
 func render404(context: PageRenderingContext) -> Node {
-  baseHtml(title: "Bolhoed.net | 404", section: nil) {
+  baseHtml(title: "Bolhoed.net | 404", canonicalPath: context.outputPath.url, section: nil) {
     article(class: "prose") {
       h1 { "404" }
       p { "Sorry, but the page you've requested doesn't exist." }
@@ -11,7 +11,7 @@ func render404(context: PageRenderingContext) -> Node {
 }
 
 func renderPage(context: ItemRenderingContext<EmptyMetadata>) -> Node {
-  baseHtml(title: "Bolhoed.net | \(context.item.title)", section: nil) {
+  baseHtml(title: "Bolhoed.net | \(context.item.title)", canonicalPath: context.item.url, section: nil) {
     article(class: "prose") {
       h1 { context.item.title }
       Node.raw(context.item.body)
@@ -20,7 +20,7 @@ func renderPage(context: ItemRenderingContext<EmptyMetadata>) -> Node {
 }
 
 func renderHome(context: ItemRenderingContext<EmptyMetadata>) -> Node {
-  baseHtml(title: "Bolhoed.net", section: .home) {
+  baseHtml(title: "Bolhoed.net", canonicalPath: context.item.url, section: .home) {
     div(class: "md:mt-auto md:ml-auto md:max-w-xl md:rounded-2xl md:bg-bodybg/30 md:p-10 md:backdrop-blur-lg") {
       article(class: "prose") {
         h1 { Node.raw(context.item.title) }
