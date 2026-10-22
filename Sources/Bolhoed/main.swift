@@ -148,6 +148,7 @@ try await Saga(input: "content", output: ".deploy")
 
   // Same for the posters we download during the build
   .ignoreChanges("content/static/posters/*/*")
+  .ignoreChanges("content/static/maps/*")
 
   // Blog (articles)
   .register(
@@ -188,6 +189,7 @@ try await Saga(input: "content", output: ".deploy")
       nested.register(
         metadata: ImageMetadata.self,
         readers: [.imageReader],
+        itemProcessor: downloadMap,
         writers: [
           .itemWriter(swim(renderPhoto)),
         ]

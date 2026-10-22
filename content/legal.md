@@ -13,3 +13,7 @@ If you'd like to license or use one of my photographs, please contact me at [kev
 ## Other content
 
 The text on this website is also my own work and protected by copyright. Posters, cover art, and other images of games, movies, TV shows, and music albums are the property of their respective owners and are shown for identification purposes only.
+
+## Maps
+
+Map images are © [Mapbox](https://www.mapbox.com/about/maps) and © [OpenStreetMap contributors](https://www.openstreetmap.org/copyright).

@@ -44,6 +44,8 @@ RUN git clone https://github.com/kevinrenskers/bolhoed.net.git /tmp/repo \
 # that changing a value doesn't invalidate the dependency cache.
 ARG TMDB_ACCESS_TOKEN
 ENV TMDB_ACCESS_TOKEN=${TMDB_ACCESS_TOKEN}
+ARG MAPBOX_TOKEN
+ENV MAPBOX_TOKEN=${MAPBOX_TOKEN}
 
 # Build the site, reusing the downloaded Tailwind binary between builds
 RUN --mount=type=cache,target=/root/.swifttailwind \

@@ -103,11 +103,11 @@ func renderPhoto(context: ItemRenderingContext<ImageMetadata>) -> Node {
   let album = photo.parent(as: PhotoAlbumMetadata.self)
 
   return baseHtml(title: "Bolhoed.net | Photos | \(album.title)", section: .photos) {
-    div(class: "lg:grid lg:grid-cols-[10rem_minmax(0,1fr)] lg:gap-12") {
+    div(class: "lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-12") {
       div {
         img(
           alt: "Photo from \(album.title)",
-          class: "mx-auto h-auto max-h-[calc(100vh-16rem)] w-auto max-w-full border-white border-[50px]",
+          class: "mx-auto h-auto max-h-[calc(100vh-16rem)] w-auto max-w-full border-white border-[16px] md:border-[24px]",
           decoding: "async",
           height: photo.height,
           src: "/\(photo.relativeSource)",
@@ -191,6 +191,18 @@ private func photoDetails(_ photo: Item<ImageMetadata>, album: Item<PhotoAlbumMe
         }
       }
     }
+    
+    if let mapURL = photo.mapURL, let coordinates = photo.coordinates {
+      div {
+        dt(class: "text-xs uppercase tracking-wide text-textfg/60") { "Location" }
+        dd(class: "mt-1") {
+          a(href: "https://www.google.com/maps/search/?api=1&query=\(coordinates.latitude),\(coordinates.longitude)", target: "_blank") {
+            img(alt: "Map of where this photo was taken", height: "220", src: mapURL, width: "220")
+          }
+        }
+      }
+    }
+
     div {
       dt(class: "text-xs uppercase tracking-wide text-textfg/60") { "Album" }
       dd(class: "mt-1") {
