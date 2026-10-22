@@ -50,7 +50,7 @@ extension Item where M == ImageMetadata {
 
   // The logo and attribution are left off the image, the legal notice page credits Mapbox and OSM
   let center = "\(location.longitude),\(location.latitude)"
-  let url = URL(string: "https://api.mapbox.com/styles/v1/mapbox/light-v11/static/pin-s+2b2b2b(\(center))/\(center),6/220x220@2x?attribution=false&logo=false&access_token=\(token)")!
+  let url = URL(string: "https://api.mapbox.com/styles/v1/kevinrenskers/cmvjyum7e00n401s5hyu35ftm/static/pin-s+2b2b2b(\(center))/\(center),6.5/220x220@2x?attribution=false&logo=false&access_token=\(token)")!
 
   do {
     let (data, response) = try await URLSession.shared.data(from: url)
