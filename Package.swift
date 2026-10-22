@@ -8,11 +8,11 @@ let package = Package(
     .macOS(.v14),
   ],
   dependencies: [
-    .package(url: "https://github.com/loopwerk/Saga", from: "3.0.0"),
+    .package(url: "https://github.com/loopwerk/Saga", from: "3.8.1"),
     .package(url: "https://github.com/loopwerk/SagaParsleyMarkdownReader", from: "1.0.0"),
     .package(url: "https://github.com/loopwerk/SagaSwimRenderer", from: "1.0.0"),
     .package(url: "https://github.com/loopwerk/SagaUtils", from: "1.0.2"),
-    .package(url: "https://github.com/loopwerk/SagaImageReader", from: "1.2.0"),
+    .package(url: "https://github.com/loopwerk/SagaImageReader", from: "1.3.0"),
     .package(url: "https://github.com/loopwerk/Bonsai", from: "1.1.0"),
     .package(url: "https://github.com/loopwerk/SwiftTailwind", from: "1.0.0"),
     .package(url: "https://github.com/swiftcsv/SwiftCSV", from: "0.8.0"),

@@ -1,5 +1,5 @@
 {
-  "originHash" : "6c1e6bcce844d561bfd155ef7f3bacdfee2d5804a4f7f5e4361ce7d4d9d4146e",
+  "originHash" : "6a2c8f20c91c1e8b7f0158a0a6fd79683a0e96420504716a0723ec37644fe9d2",
   "pins" : [
     {
       "identity" : "bonsai",
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/loopwerk/Saga",
       "state" : {
-        "revision" : "c50e2d071082011979bf44e71234847829c02adf",
-        "version" : "3.7.0"
+        "revision" : "0b715eed4662239e45a637b091c2b19b159f9fb7",
+        "version" : "3.8.1"
       }
     },
     {
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/loopwerk/SagaImageReader",
       "state" : {
-        "revision" : "73773aa8135455c9d9d122d19df6ec704d9426b5",
-        "version" : "1.2.0"
+        "revision" : "601e721d510b7a70a5c248f09208d4a8bc6d47ed",
+        "version" : "1.3.0"
       }
     },
     {
@@ -69,8 +69,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/loopwerk/SagaUtils",
       "state" : {
-        "revision" : "942f62107aa37bf5083102aea8f79f3a8936518c",
-        "version" : "1.5.0"
+        "revision" : "ec8eaf1f04c3112b5898d7196ac4272ab653a388",
+        "version" : "1.5.1"
       }
     },
     {

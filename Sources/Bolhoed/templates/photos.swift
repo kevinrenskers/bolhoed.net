@@ -4,15 +4,6 @@ import Saga
 import SagaImageReader
 
 extension Item where M == ImageMetadata {
-  /// EXIF dates look like "2023:09:22 18:42:45"
-  var takenAt: Date? {
-    guard let value = metadata.dateTimeOriginal ?? metadata.dateTime else { return nil }
-    let formatter = DateFormatter()
-    formatter.locale = Locale(identifier: "en_US_POSIX")
-    formatter.dateFormat = "yyyy:MM:dd HH:mm:ss"
-    return formatter.date(from: value)
-  }
-
   var thumbnailURL: String {
     let path = "static/thumbnails/\(relativeSource.lastComponentWithoutExtension).webp"
     return FileManager.default.fileExists(atPath: "content/\(path)") ? "/\(path)" : "/\(relativeSource)"
@@ -27,16 +18,8 @@ extension Item where M == ImageMetadata {
   }
 }
 
-extension Item where M == PhotoAlbumMetadata {
-  /// Saga titles albums after their folder: "street-photography" becomes "Street photography"
-  var name: String {
-    let words = title.replacingOccurrences(of: "-", with: " ")
-    return words.prefix(1).uppercased() + words.dropFirst()
-  }
-}
-
 private func photoCount(_ count: Int) -> String {
-  "\(count) \(count == 1 ? "photo" : "photos")"
+  return "\(count) \(count == 1 ? "photo" : "photos")"
 }
 
 // MARK: - Albums
@@ -61,12 +44,12 @@ private func albumCard(_ album: Item<PhotoAlbumMetadata>) -> Node {
   let cover = Array(photos.prefix(4))
 
   return a(class: "group block", href: album.url) {
-    div(class: "grid aspect-square grid-cols-2 grid-rows-2") {
+    div(class: "grid aspect-square grid-cols-2 grid-rows-2 overflow-hidden") {
       (0 ..< 4).map { index in
         div(class: "relative bg-textfg/5") {
           if index < cover.count {
             img(
-              alt: "Photo from \(album.name)",
+              alt: "Photo from \(album.title)",
               // Safari draws the rows at the half-pixel offset the text above can leave, showing a light seam
               // between them. The top photos overlap the bottom row by 1px to cover it.
               class: index < 2 ? "absolute inset-x-0 top-0 z-10 h-[calc(100%+1px)] w-full object-cover" : "absolute inset-0 h-full w-full object-cover",
@@ -78,7 +61,7 @@ private func albumCard(_ album: Item<PhotoAlbumMetadata>) -> Node {
         }
       }
     }
-    h2(class: "mt-3 font-semibold leading-snug group-hover:text-accent") { album.name }
+    h2(class: "mt-3 font-semibold leading-snug group-hover:text-accent") { album.title }
     p(class: "mt-1 text-sm text-textfg/60") { photoCount(photos.count) }
   }
 }
@@ -89,9 +72,9 @@ func renderPhotoAlbum(context: ItemRenderingContext<PhotoAlbumMetadata>) -> Node
   let album = context.item
   let photos = album.children(as: ImageMetadata.self)
 
-  return baseHtml(title: "Bolhoed.net | Photos | \(album.name)", section: .photos) {
+  return baseHtml(title: "Bolhoed.net | Photos | \(album.title)", section: .photos) {
     header(class: "page-header") {
-      h1 { album.name }
+      h1 { album.title }
       p { photoCount(photos.count) }
     }
 
@@ -99,7 +82,7 @@ func renderPhotoAlbum(context: ItemRenderingContext<PhotoAlbumMetadata>) -> Node
       photos.map { photo in
         a(class: "group block aspect-square overflow-hidden", href: photo.url) {
           img(
-            alt: "Photo from \(album.name)",
+            alt: "Photo from \(album.title)",
             class: "h-full w-full object-cover transition duration-500 group-hover:scale-105",
             decoding: "async",
             height: photo.height,
@@ -119,11 +102,11 @@ func renderPhoto(context: ItemRenderingContext<ImageMetadata>) -> Node {
   let photo = context.item
   let album = photo.parent(as: PhotoAlbumMetadata.self)
 
-  return baseHtml(title: "Bolhoed.net | Photos | \(album.name)", section: .photos) {
+  return baseHtml(title: "Bolhoed.net | Photos | \(album.title)", section: .photos) {
     div(class: "lg:grid lg:grid-cols-[10rem_minmax(0,1fr)] lg:gap-12") {
       div {
         img(
-          alt: "Photo from \(album.name)",
+          alt: "Photo from \(album.title)",
           class: "mx-auto h-auto max-h-[calc(100vh-16rem)] w-auto max-w-full border-white border-[50px]",
           decoding: "async",
           height: photo.height,
@@ -179,7 +162,7 @@ private func photoDetails(_ photo: Item<ImageMetadata>, album: Item<PhotoAlbumMe
   }
 
   let details: [(String, String?)] = [
-    ("Date", photo.takenAt?.formatted("MMMM d, yyyy")),
+    ("Date", photo.date.formatted("MMMM d, yyyy")),
     ("Camera", camera),
     ("Lens", m.lensModel),
   ]
@@ -211,7 +194,7 @@ private func photoDetails(_ photo: Item<ImageMetadata>, album: Item<PhotoAlbumMe
     div {
       dt(class: "text-xs uppercase tracking-wide text-textfg/60") { "Album" }
       dd(class: "mt-1") {
-        a(class: "underline underline-offset-2 hover:text-accent", href: album.url) { album.name }
+        a(class: "underline underline-offset-2 hover:text-accent", href: album.url) { album.title }
       }
     }
   }

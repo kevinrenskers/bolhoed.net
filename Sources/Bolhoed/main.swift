@@ -176,6 +176,10 @@ try await Saga(input: "content", output: ".deploy")
   .register(
     folder: "photos",
     metadata: PhotoAlbumMetadata.self,
+    itemProcessor: { album in
+      let words = album.title.replacingOccurrences(of: "-", with: " ")
+      album.title = words.prefix(1).uppercased() + words.dropFirst()
+    },
     writers: [
       .listWriter(swim(renderPhotoAlbums)),
       .itemWriter(swim(renderPhotoAlbum)),
@@ -184,12 +188,6 @@ try await Saga(input: "content", output: ".deploy")
       nested.register(
         metadata: ImageMetadata.self,
         readers: [.imageReader],
-        itemProcessor: { photo in
-          // Use exif data as the item's date
-          if let takenAt = photo.takenAt {
-            photo.date = takenAt
-          }
-        },
         writers: [
           .itemWriter(swim(renderPhoto)),
         ]
