@@ -1,14 +1,14 @@
 import Bonsai
 import Foundation
 import Saga
+import SagaImageReader
 import SagaParsleyMarkdownReader
-import SagaSwimRenderer
-import SwiftTailwind
 import SagaPathKit
+import SagaSwimRenderer
+import SagaUtils
 import SwiftCSV
 import SwiftDotenv
-import SagaUtils
-import SagaImageReader
+import SwiftTailwind
 
 try? Dotenv.configure()
 
@@ -93,19 +93,19 @@ extension Item where M == ArticleMetadata {
   }
 
   var year: Int {
-    return Calendar.current.component(.year, from: date)
+    Calendar.current.component(.year, from: date)
   }
-  
+
   var creationDate: Date {
     // Use file modification date if it matches the filename date (accounting for timezone)
     // The git-restore-mtime script should have set proper file timestamps to the FIRST commit
     let amsterdamTimeZone = TimeZone(identifier: "Europe/Amsterdam")!
     var calendar = Calendar.current
     calendar.timeZone = amsterdamTimeZone
-    
+
     let fileCreationComponents = calendar.dateComponents([.year, .month, .day], from: lastModified)
     let selfDateComponents = calendar.dateComponents([.year, .month, .day], from: date)
-    
+
     // Check if the dates match in Amsterdam timezone
     if fileCreationComponents.year == selfDateComponents.year,
        fileCreationComponents.month == selfDateComponents.month,
@@ -113,14 +113,14 @@ extension Item where M == ArticleMetadata {
     {
       return lastModified
     }
-    
+
     // Fallback to self.date (filename date at noon)
     var components = Calendar.current.dateComponents([.year, .month, .day], from: date)
     components.hour = 12
     components.minute = 0
     components.second = 0
     components.timeZone = TimeZone.current
-    
+
     return Calendar.current.date(from: components) ?? date
   }
 }
@@ -135,7 +135,7 @@ try await Saga(input: "content", output: ".deploy")
       // It needs to be a css file or a template file, otherwise, skip it
       return
     }
-    
+
     try await tailwind.run(
       input: "content/static/input.css",
       output: "content/static/output.css",
@@ -252,7 +252,7 @@ try await Saga(input: "content", output: ".deploy")
   )
 
   // Sitemap
-  .createPage("sitemap.xml", using: Saga.sitemap(baseURL: SiteMetadata.url, filter: { path, item in
+  .createPage("sitemap.xml", using: Saga.sitemap(baseURL: SiteMetadata.url, filter: { path, _ in
     if path.string.hasSuffix("feed.xml") {
       return false
     }

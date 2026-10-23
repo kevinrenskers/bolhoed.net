@@ -59,3 +59,6 @@ clean-thumbnails:
 	end
 
 	echo "Removed $removed thumbnail(s), $(count $photos) photos"
+
+format:
+  swiftformat --swift-version 6 .

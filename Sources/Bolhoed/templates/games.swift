@@ -27,7 +27,7 @@ func renderGames(context: ItemsRenderingContext<GameMetadata>) -> Node {
         }
       }
     }
-    
+
     if Saga.isDev {
       script(src: "/static/enhance.js")
       Node.raw("<script>enhance('games');</script>")

@@ -2,10 +2,10 @@ import Foundation
 #if canImport(FoundationNetworking)
   import FoundationNetworking
 #endif
-import SwiftDotenv
 import Saga
 import SagaPathKit
 import SwiftCSV
+import SwiftDotenv
 
 private let postersFolder: Path = "content/static/posters/imdb"
 
@@ -16,15 +16,15 @@ enum MediaKind {
   case tv
 }
 
-// TMDB's /find endpoint, which looks up a title by its IMDb id
+/// TMDB's /find endpoint, which looks up a title by its IMDb id
 private struct TMDBFindResponse: Decodable {
   struct Result: Decodable {
     let posterPath: String?
   }
-  
+
   let tvResults: [Result]
   let movieResults: [Result]
-  
+
   func posterPath(preferring kind: MediaKind) -> String? {
     let results = switch kind {
       case .movie: movieResults + tvResults
@@ -39,7 +39,7 @@ private struct TMDBFindResponse: Decodable {
 func downloadPoster(imdbID: String, kind: MediaKind) async {
   let destination = postersFolder + "\(imdbID).jpg"
   guard !destination.exists else { return }
-  
+
   guard let token = Dotenv["TMDB_ACCESS_TOKEN"]?.stringValue else {
     print("⚠️ TMDB_ACCESS_TOKEN is not set, skipping poster downloads")
     return
@@ -48,17 +48,17 @@ func downloadPoster(imdbID: String, kind: MediaKind) async {
   var request = URLRequest(url: URL(string: "https://api.themoviedb.org/3/find/\(imdbID)?external_source=imdb_id")!)
   request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
   request.setValue("application/json", forHTTPHeaderField: "accept")
-  
+
   do {
     let (data, _) = try await URLSession.shared.data(for: request)
     let decoder = JSONDecoder()
     decoder.keyDecodingStrategy = .convertFromSnakeCase
-    
+
     guard let posterPath = try decoder.decode(TMDBFindResponse.self, from: data).posterPath(preferring: kind) else {
       print("⚠️ No poster found for \(imdbID)")
       return
     }
-    
+
     let (imageData, _) = try await URLSession.shared.data(from: URL(string: "https://image.tmdb.org/t/p/w500\(posterPath)")!)
     try postersFolder.mkpath()
     try destination.write(imageData)
@@ -69,7 +69,7 @@ func downloadPoster(imdbID: String, kind: MediaKind) async {
 
 func fetch(csvName: String, kind: MediaKind) async throws -> [Item<ImdbMetadata>] {
   let csvFile = try loadCSV(named: csvName)
-  
+
   let items = compactMapRows(csvFile) { position, row in
     let metadata = try ImdbMetadata(
       position: position,
@@ -80,10 +80,10 @@ func fetch(csvName: String, kind: MediaKind) async throws -> [Item<ImdbMetadata>
     )
     return Item(title: metadata.title, metadata: metadata)
   }
-  
+
   for item in items {
     await downloadPoster(imdbID: item.metadata.id, kind: kind)
   }
-  
+
   return items
 }

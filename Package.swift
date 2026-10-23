@@ -16,7 +16,7 @@ let package = Package(
     .package(url: "https://github.com/loopwerk/Bonsai", from: "1.1.0"),
     .package(url: "https://github.com/loopwerk/SwiftTailwind", from: "1.0.0"),
     .package(url: "https://github.com/swiftcsv/SwiftCSV", from: "0.8.0"),
-    .package(url: "https://github.com/thebarndog/swift-dotenv.git", from: "2.0.0")
+    .package(url: "https://github.com/thebarndog/swift-dotenv.git", from: "2.0.0"),
   ],
   targets: [
     .executableTarget(

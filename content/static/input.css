@@ -6,6 +6,8 @@
 
 @source "../../Sources/Bolhoed/templates/*.swift";
 
+@custom-variant short (@media (max-height: 900px));
+
 @theme {
   --color-accent: #f1a948;
   --color-bodybg: #fdfbf5;
@@ -117,7 +119,7 @@
   @apply mx-auto w-full max-w-[64rem] px-6;
 }
 
-/* The nav sticks at -top-12, so its first 48px of padding scroll away; the border fades in over that same distance.
+/* On desktop the nav sticks at -top-12, so its first 48px of padding scroll away; the border fades in over that same distance.
    Browsers without scroll timelines just show the border all the time. */
 @utility sticky-nav-border {
   animation: sticky-nav-border linear both;

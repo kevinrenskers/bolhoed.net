@@ -11,7 +11,7 @@ enum Section: String, CaseIterable, Codable {
   case shows
   case movies
   case albums
-  
+
   var title: String {
     switch self {
       case .home: "Home"
@@ -82,7 +82,7 @@ func baseHtml(title pageTitle: String, canonicalPath: String, section: Section?,
         meta(content: "\(ogImage.height)", customAttributes: ["property": "og:image:height"])
         meta(content: canonicalURL, customAttributes: ["property": "og:url"])
         meta(content: "summary_large_image", name: "twitter:card")
-        
+
         extraHeader
 
         if !Saga.isDev {
@@ -90,8 +90,8 @@ func baseHtml(title pageTitle: String, canonicalPath: String, section: Section?,
         }
       }
       body(class: "bg-bodybg flex min-h-screen flex-col text-textfg antialiased \(section?.rawValue ?? "")") {
-        nav(class: "sticky -top-12 z-50 border-b border-transparent bg-bodybg sticky-nav-border") {
-          div(class: "relative container flex items-center pt-16 pb-4 text-sm") {
+        nav(class: "sticky top-0 md:-top-12 z-50 border-b border-transparent bg-bodybg sticky-nav-border") {
+          div(class: "relative container flex items-center pt-4 md:pt-16 pb-4 text-sm") {
             a(class: "text-textfg hover:text-accent", href: Section.home.path, title: Section.home.title) {
               if section == .home {
                 span(class: "font-title text-2xl font-bold") { "Bolhoed" }
@@ -132,7 +132,7 @@ func baseHtml(title pageTitle: String, canonicalPath: String, section: Section?,
           }
         }
 
-        main(class: "container flex flex-1 flex-col py-8 md:py-16") {
+        main(class: "container flex flex-1 flex-col py-6 md:py-12 lg:py-16 \(section == .home ? "lg:short:py-8" : "")") {
           children()
         }
 
@@ -143,7 +143,7 @@ func baseHtml(title pageTitle: String, canonicalPath: String, section: Section?,
           }
         }
       }
-    }
+    },
   ]
 }
 

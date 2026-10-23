@@ -40,7 +40,7 @@ extension [String: String] {
 
   /// A required column that has to hold a number.
   func requiredInt(_ column: String) throws -> Int {
-    guard let value = Int(try required(column)) else { throw IncompleteRow(column: column) }
+    guard let value = try Int(required(column)) else { throw IncompleteRow(column: column) }
     return value
   }
 }

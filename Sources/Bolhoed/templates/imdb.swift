@@ -17,7 +17,7 @@ func renderShows(context: ItemsRenderingContext<ImdbMetadata>) -> Node {
     ul(class: "grid grid-cols-2 gap-8 lg:gap-12 md:grid-cols-3 lg:grid-cols-4") {
       context.items.map(showCard)
     }
-    
+
     if Saga.isDev {
       script(src: "/static/enhance.js")
       Node.raw("<script>enhance('shows');</script>")
@@ -39,7 +39,7 @@ func renderMovies(context: ItemsRenderingContext<ImdbMetadata>) -> Node {
     ul(class: "grid grid-cols-2 gap-8 lg:gap-12 md:grid-cols-3 lg:grid-cols-4") {
       context.items.map(showCard)
     }
-    
+
     if Saga.isDev {
       script(src: "/static/enhance.js")
       Node.raw("<script>enhance('movies');</script>")

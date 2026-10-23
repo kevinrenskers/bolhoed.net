@@ -103,7 +103,7 @@ private func downloadCoverArt(id: String, assetURL: String?) async {
   let destination = posterPath(id: id)
   guard !destination.exists else { return }
 
-  let candidates = [assetURL].compactMap { $0 }
+  let candidates = [assetURL].compactMap(\.self)
     + legacyCoverArtSources.map { "https://cdn.cloudflare.steamstatic.com/steam/apps/\(id)/\($0)" }
 
   for candidate in candidates {

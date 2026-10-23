@@ -11,7 +11,7 @@ extension Item where M == ImageMetadata {
 }
 
 private func photoCount(_ count: Int) -> String {
-  return "\(count) \(count == 1 ? "photo" : "photos")"
+  "\(count) \(count == 1 ? "photo" : "photos")"
 }
 
 // MARK: - Albums
@@ -131,7 +131,7 @@ func renderPhoto(context: ItemRenderingContext<ImageMetadata>) -> Node {
   }
 }
 
-// Exposure time in seconds as photographers write it: 0.01 → "1/100s", 2.5 → "2.5s"
+/// Exposure time in seconds as photographers write it: 0.01 → "1/100s", 2.5 → "2.5s"
 private func shutterSpeed(_ exposureTime: String) -> String {
   guard let seconds = Double(exposureTime), seconds > 0 else { return "\(exposureTime)s" }
   if seconds >= 1 {
@@ -148,7 +148,7 @@ private let isoIcon = #"<svg class="size-4 shrink-0" xmlns="http://www.w3.org/20
 
 private func photoDetails(_ photo: Item<ImageMetadata>, album: Item<PhotoAlbumMetadata>) -> Node {
   let m = photo.metadata
-  let camera = [m.make, m.model].compactMap { $0 }.joined(separator: " ")
+  let camera = [m.make, m.model].compactMap(\.self).joined(separator: " ")
   let settingParts: [(icon: String, value: String?)] = [
     (focalLengthIcon, m.focalLenIn35mmFilm.map { "\($0)mm" } ?? m.focalLength.map { "\($0)mm" }),
     (apertureIcon, m.fNumber.map { "f/\($0)" }),
@@ -189,7 +189,7 @@ private func photoDetails(_ photo: Item<ImageMetadata>, album: Item<PhotoAlbumMe
         }
       }
     }
-    
+
     if let mapURL = photo.mapURL, let coordinates = photo.coordinates {
       div {
         dt(class: "text-xs uppercase tracking-wide text-textfg/60") { "Location" }
