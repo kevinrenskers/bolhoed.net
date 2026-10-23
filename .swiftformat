@@ -1,8 +1,0 @@
---indent 2
---indentcase true
---patternlet inline
---disable unusedArguments
---disable redundantReturn
---disable opaqueGenericParameters
---disable hoistTry
---disable blankLinesBetweenChainedFunctions
