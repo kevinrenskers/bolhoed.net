@@ -17,8 +17,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #fdfbf5 url(/ape.svg) left -50px bottom / auto 75vh
-          no-repeat;
+        /* Height cap keeps the ape's right edge (405:616 ratio, -50px offset) ~2rem left of the centered content */
+        background: #fdfbf5 url(/ape.svg) left -50px bottom / auto
+          min(75vh, 76vw - 152px) no-repeat;
         color: #2b2b2b;
       }
       @media (max-width: 1023px) {
