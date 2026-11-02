@@ -398,7 +398,10 @@
     const cur = posOf(id);
     if (zoneOf(id) === zone && cur[0] === r && cur[1] === c) return false;
     const occ = occupant(zone, r, c);
-    if (occ !== undefined && occ !== id) {
+    if (occ !== undefined && occ !== id && zone === 'board') {
+      removeFrom(id);
+      makeRoom(r, c);
+    } else if (occ !== undefined && occ !== id) {
       // squeeze in: push neighbours right (or left) up to the next free cell
       const free = cc => { const o = occupant(zone, r, cc); return o === undefined || o === id; };
       let e = c;
@@ -467,6 +470,14 @@
     if (end.ids.includes(tiles[0])) { moveToOtherRow(tiles, r); return; }
     moveToOtherRow(end.ids, r);
     shiftRow(r, first, dir);
+  }
+
+  /** Frees board cell (r, c) by pushing tiles aside without gluing sets together. */
+  function makeRoom(r, c) {
+    if (shiftRow(r, c, 1) || shiftRow(r, c, -1)) return;
+    const rowSets = boardSets(S.board, boardRows(), BOARD_COLS).filter(s => s.r === r);
+    moveToOtherRow(rowSets[rowSets.length - 1].ids, r);
+    if (occupant('board', r, c) !== undefined) shiftRow(r, c, 1);
   }
 
   /**
