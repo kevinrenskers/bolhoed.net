@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rummy Tiles</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 40'%3E%3Crect x='1' y='1' width='30' height='38' rx='5' fill='%23fffaf0' stroke='%23b9a888' stroke-width='2'/%3E%3Ctext x='16' y='27' font-size='20' font-weight='900' font-family='Arial' text-anchor='middle' fill='%23cc2a2a'%3E7%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <header id="topbar">
+      <button id="menuBtn" class="btn small" type="button">☰ <span data-t="menu"></span></button>
+      <div id="opponents"></div>
+      <div id="poolInfo"><div class="pool-stack"></div><div><span id="poolCount">0</span><small data-t="pool"></small></div></div>
+    </header>
+
+    <main id="table">
+      <div id="board" data-zone="board"></div>
+    </main>
+
+    <div id="status"></div>
+
+    <footer id="rackArea">
+      <div id="me"></div>
+      <div id="rackWrap"><div id="rack" data-zone="rack"></div></div>
+      <div id="controls">
+        <div class="row">
+          <button id="sortGroups" class="btn" type="button" data-t="sort777" data-tip="sort777Tip"></button>
+          <button id="sortRuns" class="btn" type="button" data-t="sort789" data-tip="sort789Tip"></button>
+        </div>
+        <div class="row">
+          <button id="undoBtn" class="btn" type="button" data-t="undo"></button>
+          <button id="resetBtn" class="btn" type="button" data-t="reset"></button>
+        </div>
+        <div class="row">
+          <button id="drawBtn" class="btn draw" type="button"></button>
+          <button id="doneBtn" class="btn primary" type="button" data-t="done"></button>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <div id="overlay" hidden><div id="dialog"></div></div>
+  <div id="toast" hidden></div>
+
+  <script src="js/tiles.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
