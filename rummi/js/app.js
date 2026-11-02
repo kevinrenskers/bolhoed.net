@@ -387,6 +387,7 @@
     }
     const before = isMyTurn() ? snapshot() : null; // no undo entry while the computer moves
     const ok = ids.length === 1 ? moveSingle(ids[0], zone, r, c, cols) : moveMany(ids, zone, r, c, cols);
+    if (ok && zone === 'board') keepSetsApart(ids, r);
     if (ok && before) history.push(before);
     // a hand-made rack arrangement wins over automatic sorting from now on
     if (ok && zone === 'rack') S.rackSort = null;
@@ -432,6 +433,71 @@
     ordered.forEach(removeFrom);
     ordered.forEach((id, i) => putAt(id, zone, r, c + i));
     return true;
+  }
+
+  /**
+   * Tiles dropped into the gap between two sets glue them into one long row.
+   * If the tiles complete the set on one side, push the other set away so the
+   * gap comes back.
+   */
+  function keepSetsApart(ids, r) {
+    const at = c => occupant('board', r, c);
+    const cols = ids.map(id => S.board[id][1]);
+    const a = Math.min(...cols), b = Math.max(...cols);
+    let s = a, e = b;
+    while (s > 0 && at(s - 1) !== undefined) s--;
+    while (e < BOARD_COLS - 1 && at(e + 1) !== undefined) e++;
+    if (s === a || e === b) return;
+    const span = (x, y) => { const out = []; for (let c = x; c <= y; c++) out.push(at(c)); return out; };
+    if (analyzeSet(span(s, e)).valid) return;
+    if (analyzeSet(span(s, b)).valid) separate(r, span(b + 1, e), 1);
+    else if (analyzeSet(span(a, e)).valid) separate(r, span(s, a - 1), -1);
+  }
+
+  /**
+   * Pushes `tiles` one cell away in direction dir. When the row is full, the
+   * set at the end of the row moves to another row to make room.
+   */
+  function separate(r, tiles, dir) {
+    const first = S.board[dir > 0 ? tiles[0] : tiles[tiles.length - 1]][1];
+    if (shiftRow(r, first, dir)) return;
+    const rowSets = boardSets(S.board, boardRows(), BOARD_COLS).filter(s => s.r === r);
+    const end = rowSets[dir > 0 ? rowSets.length - 1 : 0];
+    // the end set is the one that just got glued together: only its other half moves
+    if (end.ids.includes(tiles[0])) { moveToOtherRow(tiles, r); return; }
+    moveToOtherRow(end.ids, r);
+    shiftRow(r, first, dir);
+  }
+
+  /**
+   * Shifts the tiles from column c onwards one cell in direction dir, stopping
+   * at the first free cell that doesn't close the gap to the next set.
+   */
+  function shiftRow(r, c, dir) {
+    const inRow = cc => cc >= 0 && cc < BOARD_COLS;
+    const free = cc => !inRow(cc) || occupant('board', r, cc) === undefined;
+    let f = c;
+    while (inRow(f) && !(free(f) && free(f + dir))) f += dir;
+    if (!inRow(f)) return false;
+    for (let cc = f - dir; cc !== c - dir; cc -= dir) {
+      const o = occupant('board', r, cc);
+      if (o !== undefined) S.board[o] = [r, cc + dir];
+    }
+    return true;
+  }
+
+  /** Puts a set in the first spot on another row with a free cell on both sides, or on a new row. */
+  function moveToOtherRow(tiles, r) {
+    const rows = boardRows(), len = tiles.length;
+    tiles.forEach(id => delete S.board[id]);
+    const free = (rr, c) => c < 0 || c >= BOARD_COLS || occupant('board', rr, c) === undefined;
+    const fits = (rr, c) => { for (let i = -1; i <= len; i++) if (!free(rr, c + i)) return false; return true; };
+    let spot = [rows, 0];
+    search: for (let rr = 0; rr < rows; rr++) {
+      if (rr === r) continue;
+      for (let c = 0; c + len <= BOARD_COLS; c++) if (fits(rr, c)) { spot = [rr, c]; break search; }
+    }
+    tiles.forEach((id, i) => (S.board[id] = [spot[0], spot[1] + i]));
   }
 
   function sortedSelection() {
