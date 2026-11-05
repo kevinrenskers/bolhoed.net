@@ -161,6 +161,14 @@ body {
 .tile.pending { box-shadow: 0 3px 0 #b9a888, 0 0 0 2px rgba(255, 140, 100, .75); }
 .tile.invalid { box-shadow: 0 0 0 3px #ff4d4d, 0 0 14px #ff4d4d; animation: shake .35s; }
 .tile.dragging { opacity: .25; }
+.tile.landing { visibility: hidden; }
+.tile.flying {
+  position: fixed; inset: auto; z-index: 60;
+  pointer-events: none;
+  transform-origin: 0 0;
+  box-shadow: 0 3px 0 #b9a888, 0 10px 18px rgba(0, 0, 0, 0.45);
+}
+.tile.back { background: linear-gradient(135deg, #2b5f9e, #1b3e6b); box-shadow: 0 3px 0 #163255; }
 @keyframes glow { 50% { box-shadow: 0 0 0 4px #b7ffe2, 0 0 26px #7ef0c0; } }
 @keyframes shake { 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
 

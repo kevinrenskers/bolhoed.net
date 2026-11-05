@@ -10,6 +10,7 @@
   const CPU_NAMES = ['Ada', 'Bram', 'Cleo'];
   const COLOR_CLASS = ['c0', 'c1', 'c2', 'c3'];
   const SPEED = { slow: 1.7, normal: 1, fast: 0.4 };
+  const FLY_MS = 350, STEP_MS = 200;
 
   const $ = s => document.querySelector(s);
   const loadJSON = k => { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } };
@@ -25,6 +26,8 @@
   let history = [];        // undo stack for the current human turn
   let selection = new Set();
   let busy = false;        // computer is moving
+  let animating = false;   // computer move is half done on screen: don't save that state
+  let landing = new Set(); // tiles flying to their table cell, hidden there until they arrive
   let token = 0;           // invalidates running computer turns when a new game starts
   let drawnId = null;      // tile just drawn by the human, highlighted in rack
   let showInvalid = false;
@@ -45,7 +48,8 @@
 
   function newGame() {
     token++;
-    busy = false;
+    busy = animating = false;
+    landing.clear();
     const pool = shuffle([...Array(106).keys()]);
     const players = [{ name: prefs.name.trim() || t('you'), cpu: false, rack: [], melded: false }];
     for (let i = 0; i < prefs.numCpu; i++) players.push({ name: CPU_NAMES[i], cpu: true, rack: [], melded: false });
@@ -66,7 +70,7 @@
   }
 
   function save() {
-    if (!S) return;
+    if (!S || animating) return;
     if (S.over) localStorage.removeItem(SAVE_KEY);
     else saveJSON(SAVE_KEY, S);
   }
@@ -137,24 +141,26 @@
     const tableSets = boardSets(S.board, boardRows(), BOARD_COLS).map(s => s.ids);
     const plan = AI.plan(tableSets, p.rack, p.melded, S.settings.difficulty, MELD);
     if (my !== token) return;
+    S.lastPlayed = [];
     if (plan) {
-      const before = new Set(Object.keys(S.board).map(Number));
-      S.board = layoutSets(S.board, plan.table, BOARD_ROWS, BOARD_COLS);
-      const played = plan.table.flat().filter(id => !before.has(id));
-      const ps = new Set(played);
-      p.rack = p.rack.filter(id => !ps.has(id));
+      const played = plan.table.flat().filter(id => !(id in S.board));
+      S.message = t('cpuPlaying', p.name);
+      animating = true;
+      await playSteps(p, plan.table, layoutSets(S.board, plan.table, BOARD_ROWS, BOARD_COLS), k, my);
+      if (my !== token) return;
+      animating = false;
       p.melded = true;
-      S.lastPlayed = played;
       S.passes = 0;
       S.message = t('cpuPlayed', p.name, played.length);
     } else if (S.pool.length) {
-      p.rack.push(S.pool.pop());
-      S.passes = 0;
-      S.lastPlayed = [];
       S.message = t('cpuDrew', p.name);
+      animating = true;
+      await drawTile(p, k);
+      if (my !== token) return;
+      animating = false;
+      S.passes = 0;
     } else {
       S.passes++;
-      S.lastPlayed = [];
       S.message = t('cpuPassed', p.name);
     }
     save();
@@ -163,6 +169,86 @@
     if (my !== token) return;
     busy = false;
     finishTurn();
+  }
+
+  /**
+   * Carries out the computer's move the way a person would: set by set, sliding
+   * table tiles to their new place and bringing tiles over from its rack.
+   */
+  async function playSteps(p, sets, final, k, my) {
+    const oldSet = new Map();
+    boardSets(S.board, boardRows(), BOARD_COLS).forEach((s, i) => s.ids.forEach(id => oldSet.set(id, i)));
+    const cellNo = id => final[id][0] * 1000 + final[id][1];
+    const steps = [], stepOf = new Map();
+    for (const ids of sets.slice().sort((a, b) => Math.min(...a.map(cellNo)) - Math.min(...b.map(cellNo)))) {
+      const order = ids.slice().sort((a, b) => cellNo(a) - cellNo(b));
+      // tiles from the same set that move the same distance slide together, like pushing a row aside
+      const slides = new Map();
+      for (const id of order) {
+        const from = S.board[id];
+        if (!from) continue;
+        const dr = final[id][0] - from[0], dc = final[id][1] - from[1];
+        if (!dr && !dc) continue;
+        const key = oldSet.get(id) + ':' + dr + ':' + dc;
+        if (!slides.has(key)) slides.set(key, []);
+        slides.get(key).push(id);
+      }
+      slides.forEach(step => { steps.push(step); step.forEach(id => stepOf.set(id, step)); });
+      order.filter(id => !S.board[id]).forEach(id => steps.push([id]));
+    }
+
+    const done = new Set();
+    const run = async step => {
+      if (done.has(step)) return;
+      done.add(step);
+      // tiles still sitting where this step goes move first (in a cycle they briefly overlap instead)
+      for (const id of step) {
+        const o = occupant('board', final[id][0], final[id][1]);
+        if (o !== undefined && !step.includes(o) && stepOf.has(o)) await run(stepOf.get(o));
+        if (my !== token) return;
+      }
+      const fromRack = !S.board[step[0]];
+      const from = step.map(id => (fromRack ? avatarRect() : tileRect(id)));
+      step.forEach(id => { S.board[id] = final[id]; landing.add(id); });
+      if (fromRack) p.rack = p.rack.filter(id => id !== step[0]);
+      render();
+      await Promise.all(step.map((id, i) => fly(tileEl(id), from[i], tileRect(id), FLY_MS * k)));
+      if (my !== token) return;
+      step.forEach(id => landing.delete(id));
+      if (fromRack) S.lastPlayed.push(step[0]);
+      render();
+      await sleep(STEP_MS * k);
+    };
+    for (const step of steps) {
+      await run(step);
+      if (my !== token) return;
+    }
+  }
+
+  /** Shows a face-down tile going from the pool to the computer player. */
+  async function drawTile(p, k) {
+    const from = $('#poolInfo .pool-stack').getBoundingClientRect();
+    const a = avatarRect();
+    const id = S.pool.pop();
+    render();
+    const back = document.createElement('div');
+    back.className = 'tile back';
+    const to = { left: a.left + (a.width - from.width) / 2, top: a.top + (a.height - from.height) / 2, width: from.width, height: from.height };
+    await fly(back, from, to, FLY_MS * k);
+    p.rack.push(id);
+  }
+
+  const avatarRect = () => $('#opponents').children[S.cur - 1].querySelector('.avatar').getBoundingClientRect();
+  const tileRect = id => $(`#board .tile[data-id="${id}"]`).getBoundingClientRect();
+
+  /** Moves a tile element across the screen from one rectangle to another, then removes it. */
+  function fly(el, from, to, ms) {
+    el.classList.add('flying');
+    Object.assign(el.style, { left: to.left + 'px', top: to.top + 'px', width: to.width + 'px', height: to.height + 'px' });
+    document.body.appendChild(el);
+    const start = `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${from.width / to.width})`;
+    return el.animate([{ transform: start }, { transform: 'none' }], { duration: ms, easing: 'ease-in-out' })
+      .finished.then(() => el.remove());
   }
 
   // ---------------------------------------------------------------- human turn
@@ -672,6 +758,7 @@
       const [r, c] = S.board[id];
       const el = tileEl(+id);
       if (glow.has(+id)) el.classList.add('glow');
+      if (landing.has(+id)) el.classList.add('landing');
       if (!(id in start)) el.classList.add('fresh');
       if (invalid.has(+id)) el.classList.add(showInvalid ? 'invalid' : 'pending');
       if (selection.has(+id)) el.classList.add('selected');
@@ -848,7 +935,8 @@
 
   function resumeGame(saved) {
     token++;
-    busy = false;
+    busy = animating = false;
+    landing.clear();
     S = saved;
     S.settings.speed = prefs.speed;
     selection.clear();
